@@ -1,8 +1,6 @@
 #include "GameEngine.h"
 #include "Timer.h"
 
-#include <SDL2/SDL_image.h>
-
 GameEngine::GameEngine(int width, int height, int scale) {
     if(!(SDL_WasInit(SDL_INIT_VIDEO) & SDL_INIT_VIDEO)) {
         SDL_Init(SDL_INIT_VIDEO);
@@ -25,15 +23,18 @@ GameEngine::GameEngine(int width, int height, int scale) {
 
     renderer = new Renderer(window, width, height, scale);
     inputHandler = new InputHandler();
+    textureManager = new TextureManager(*this);
 }
 
 GameEngine::~GameEngine() {
     if(window) {
         delete renderer;
         delete inputHandler;
-        SDL_DestroyWindow(window);
+        delete textureManager;
+        textureManager = nullptr;
         inputHandler = nullptr;
         renderer = nullptr;
+        SDL_DestroyWindow(window);
         window = nullptr;
     }
     SDL_Quit();
@@ -60,7 +61,11 @@ void GameEngine::loop(const std::function<void(double)>& loopFunction) {
 
         isRunning = getInputHandler().pollInputs();
 
-        loopFunction(delta);
+        try {
+            loopFunction(delta);
+        } catch (std::exception& e) {
+            SDL_LogError(SDL_LOG_CATEGORY_ERROR, "Exception: %s", e.what());
+        }
 
         // Calculate and correct fps
         avgFPS = countedFrames / ( fpsTimer.getTicks() / 1000.0 );
@@ -81,6 +86,10 @@ void GameEngine::loop(const std::function<void(double)>& loopFunction) {
     }
 }
 
-double GameEngine::getFPS() {
+TextureManager &GameEngine::getTextureManager() {
+    return *textureManager;
+}
+
+double GameEngine::getFPS() const {
     return avgFPS;
 }

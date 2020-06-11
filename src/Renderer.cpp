@@ -1,4 +1,5 @@
 #include "Renderer.h"
+#include "Texture.h"
 
 Renderer::Renderer(SDL_Window* window, int viewWidth, int viewHeight, int scale)
     : VIEW_WIDTH(viewWidth), VIEW_HEIGHT(viewHeight), SCALE(scale)
@@ -13,8 +14,8 @@ void Renderer::clear() {
     SDL_RenderClear(renderer);
 }
 
-void Renderer::render(SDL_Texture *texture, SDL_Rect *srcrect, SDL_Rect *destrect) {
-    SDL_RenderCopy(renderer, texture, srcrect, destrect);
+void Renderer::render(Texture* texture, SDL_Rect *srcrect, SDL_Rect *destrect) {
+    SDL_RenderCopy(renderer, texture->getSDLTexture(), srcrect, destrect);
 }
 
 void Renderer::update() {

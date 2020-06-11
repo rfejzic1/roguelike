@@ -1,15 +1,19 @@
 #pragma once
 
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
 #include "Renderer.h"
 #include "InputHandler.h"
+#include "TextureManager.h"
 
 class GameEngine {
     bool isRunning = true;
+    double avgFPS = 0;
+
     SDL_Window* window = nullptr;
     Renderer* renderer = nullptr;
     InputHandler* inputHandler = nullptr;
-    double avgFPS = 0;
+    TextureManager* textureManager = nullptr;
 
     static const int SCREEN_FPS = 120;
     static const int SCREEN_TICKS_PER_FRAME = 1000 / SCREEN_FPS;
@@ -19,8 +23,7 @@ public:
     void loop(const std::function<void(double)>& loopFunction);
     Renderer& getRenderer();
     InputHandler& getInputHandler();
-    double getFPS();
+    TextureManager& getTextureManager();
+    double getFPS() const;
     ~GameEngine();
 };
-
-

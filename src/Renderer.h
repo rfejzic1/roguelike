@@ -2,6 +2,8 @@
 
 #include <SDL2/SDL.h>
 
+class Texture;
+
 class Renderer {
     const int VIEW_WIDTH;
     const int VIEW_HEIGHT;
@@ -11,7 +13,7 @@ class Renderer {
     explicit Renderer(SDL_Window* window, int viewWidth, int viewHeight, int scale = 1);
 public:
     void clear();
-    void render(SDL_Texture* texture, SDL_Rect* srcrect, SDL_Rect* destrect);
+    void render(Texture* texture, SDL_Rect* srcrect, SDL_Rect* destrect);
     void update();
     // TODO: Remove getSDLRenderer later
     SDL_Renderer* getSDLRenderer();
