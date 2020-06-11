@@ -1,4 +1,5 @@
 #include "GameEngine.h"
+#include "Timer.h"
 
 #include <SDL2/SDL_image.h>
 
@@ -44,4 +45,42 @@ Renderer& GameEngine::getRenderer() {
 
 InputHandler &GameEngine::getInputHandler() {
     return *inputHandler;
+}
+
+void GameEngine::loop(const std::function<void(double)>& loopFunction) {
+    double delta = 0;
+    unsigned int countedFrames = 0;
+    Timer capTimer;
+    Timer fpsTimer;
+
+    fpsTimer.start();
+
+    while(isRunning) {
+        capTimer.start();
+
+        isRunning = getInputHandler().pollInputs();
+
+        loopFunction(delta);
+
+        // Calculate and correct fps
+        avgFPS = countedFrames / ( fpsTimer.getTicks() / 1000.0 );
+        if( avgFPS > 2000000 ) {
+            avgFPS = 0;
+        }
+
+        countedFrames += 1;
+
+        // If frame finished early
+        int frameTicks = capTimer.getTicks();
+        if( frameTicks < SCREEN_TICKS_PER_FRAME ) {
+            // Wait remaining time
+            int deltaTicks = SCREEN_TICKS_PER_FRAME - frameTicks;
+            delta = deltaTicks / 1000.0;
+            SDL_Delay(deltaTicks);
+        }
+    }
+}
+
+double GameEngine::getFPS() {
+    return avgFPS;
 }

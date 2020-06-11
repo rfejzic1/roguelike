@@ -2,9 +2,9 @@
 
 #include <string>
 #include "GameEngine.h"
+#include "Timer.h"
 
 class Game {
-    bool isRunning = true;
     GameEngine engine;
     SDL_Texture* character = nullptr;
 

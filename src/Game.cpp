@@ -14,7 +14,6 @@ Renderer &Game::getRenderer() {
 }
 
 int Game::run() {
-
     int x = 0, y = 0;
 
     engine.getInputHandler().on("right", [&x]() {
@@ -30,16 +29,16 @@ int Game::run() {
         y += 1;
     });
 
-    while(isRunning) {
-        isRunning = engine.getInputHandler().pollInputs();
-
+    engine.loop([this, &x, &y](double delta) {
         getRenderer().clear();
+
+        SDL_Log("fps: %lf", engine.getFPS());
 
         SDL_Rect charRect = { x * UNIT, y * UNIT, UNIT, UNIT };
         getRenderer().render(character, nullptr, &charRect);
 
         getRenderer().update();
-    }
+    });
 
     return 0;
 }
