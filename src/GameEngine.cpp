@@ -23,12 +23,15 @@ GameEngine::GameEngine(int width, int height, int scale) {
             SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
 
     renderer = new Renderer(window, width, height, scale);
+    inputHandler = new InputHandler();
 }
 
 GameEngine::~GameEngine() {
     if(window) {
         delete renderer;
+        delete inputHandler;
         SDL_DestroyWindow(window);
+        inputHandler = nullptr;
         renderer = nullptr;
         window = nullptr;
     }
@@ -37,4 +40,8 @@ GameEngine::~GameEngine() {
 
 Renderer& GameEngine::getRenderer() {
     return *renderer;
+}
+
+InputHandler &GameEngine::getInputHandler() {
+    return *inputHandler;
 }

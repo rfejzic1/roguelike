@@ -14,22 +14,33 @@ Renderer &Game::getRenderer() {
 }
 
 int Game::run() {
-    SDL_Event e;
+
+    int x = 0, y = 0;
+
+    engine.getInputHandler().on("right", [&x]() {
+        x += 1;
+    });
+    engine.getInputHandler().on("left", [&x]() {
+        x -= 1;
+    });
+    engine.getInputHandler().on("up", [&y]() {
+        y -= 1;
+    });
+    engine.getInputHandler().on("down", [&y]() {
+        y += 1;
+    });
+
     while(isRunning) {
-        while(SDL_PollEvent(&e) != 0) {
-            if( e.type == SDL_QUIT ) {
-                isRunning = false;
-            }
-        }
+        isRunning = engine.getInputHandler().pollInputs();
 
         getRenderer().clear();
 
-        SDL_Rect charRect = { 0, 0, UNIT, UNIT };
+        SDL_Rect charRect = { x * UNIT, y * UNIT, UNIT, UNIT };
         getRenderer().render(character, nullptr, &charRect);
 
         getRenderer().update();
-
     }
+
     return 0;
 }
 
