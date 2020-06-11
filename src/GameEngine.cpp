@@ -1,8 +1,8 @@
-#include "Window.h"
+#include "GameEngine.h"
 
 #include <SDL2/SDL_image.h>
 
-Window::Window(int width, int height, int scale) {
+GameEngine::GameEngine(int width, int height, int scale) {
     if(!(SDL_WasInit(SDL_INIT_VIDEO) & SDL_INIT_VIDEO)) {
         SDL_Init(SDL_INIT_VIDEO);
     }
@@ -25,7 +25,7 @@ Window::Window(int width, int height, int scale) {
     renderer = new Renderer(window, width, height, scale);
 }
 
-Window::~Window() {
+GameEngine::~GameEngine() {
     if(window) {
         delete renderer;
         SDL_DestroyWindow(window);
@@ -35,6 +35,6 @@ Window::~Window() {
     SDL_Quit();
 }
 
-Renderer& Window::getRenderer() {
+Renderer& GameEngine::getRenderer() {
     return *renderer;
 }

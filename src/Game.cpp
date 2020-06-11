@@ -1,7 +1,7 @@
 #include "Game.h"
 #include <SDL2/SDL_image.h>
 
-Game::Game() : window(VIEW_WIDTH, VIEW_HEIGHT, SCALE) {
+Game::Game() : engine(VIEW_WIDTH, VIEW_HEIGHT, SCALE) {
     character = loadTexture("/home/rijad/Projects/roguelike/images/character.png");
 }
 
@@ -10,7 +10,7 @@ Game::~Game() {
 }
 
 Renderer &Game::getRenderer() {
-    return window.getRenderer();
+    return engine.getRenderer();
 }
 
 int Game::run() {
@@ -42,7 +42,7 @@ SDL_Texture* Game::loadTexture(const std::string &path) {
         return nullptr;
     }
 
-    newTexture = SDL_CreateTextureFromSurface(window.getRenderer().getSDLRenderer(), loadedSurface);
+    newTexture = SDL_CreateTextureFromSurface(engine.getRenderer().getSDLRenderer(), loadedSurface);
     if(!newTexture) {
         SDL_Log("Error: %s", SDL_GetError());
         return nullptr;

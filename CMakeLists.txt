@@ -3,7 +3,7 @@ project(roguelike)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(roguelike main.cpp src/Game.cpp src/Game.h src/Renderer.cpp src/Renderer.h src/Window.cpp src/Window.h)
+add_executable(roguelike main.cpp src/Game.cpp src/Game.h src/Renderer.cpp src/Renderer.h src/GameEngine.cpp src/GameEngine.h)
 
 include_directories("/usr/include")
 target_link_libraries(roguelike "/usr/lib/libSDL2.so" "/usr/lib/libSDL2_image.so")

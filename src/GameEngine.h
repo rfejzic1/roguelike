@@ -3,14 +3,14 @@
 #include <SDL2/SDL.h>
 #include "Renderer.h"
 
-class Window {
+class GameEngine {
     SDL_Window* window = nullptr;
     Renderer* renderer = nullptr;
 
 public:
-    Window(int width, int height, int scale = 1);
+    GameEngine(int width, int height, int scale = 1);
     Renderer& getRenderer();
-    ~Window();
+    ~GameEngine();
 };
 
 

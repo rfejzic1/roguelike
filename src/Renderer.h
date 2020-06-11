@@ -16,5 +16,5 @@ public:
     // TODO: Remove getSDLRenderer later
     SDL_Renderer* getSDLRenderer();
     ~Renderer();
-    friend class Window;
+    friend class GameEngine;
 };

@@ -1,11 +1,11 @@
 #pragma once
 
 #include <string>
-#include "Window.h"
+#include "GameEngine.h"
 
 class Game {
     bool isRunning = true;
-    Window window;
+    GameEngine engine;
     SDL_Texture* character = nullptr;
 
     static const int UNIT = 16;
