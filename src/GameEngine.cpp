@@ -61,11 +61,15 @@ void GameEngine::loop(const std::function<void(double)>& loopFunction) {
 
         isRunning = getInputHandler().pollInputs();
 
+        getRenderer().clear();
+
         try {
             loopFunction(delta);
         } catch (std::exception& e) {
             SDL_LogError(SDL_LOG_CATEGORY_ERROR, "Exception: %s", e.what());
         }
+
+        getRenderer().update();
 
         // Calculate and correct fps
         avgFPS = countedFrames / ( fpsTimer.getTicks() / 1000.0 );

@@ -27,14 +27,9 @@ int Game::run() {
     });
 
     engine.loop([this, &x, &y, &character](double delta) {
-        getRenderer().clear();
-
         SDL_Log("fps: %lf", engine.getFPS());
-
         SDL_Rect charRect = { x * UNIT, y * UNIT, UNIT, UNIT };
         getRenderer().render(character.get(), nullptr, &charRect);
-
-        getRenderer().update();
     });
 
     return 0;
