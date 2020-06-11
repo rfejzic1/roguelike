@@ -1,7 +1,7 @@
 #pragma once
 
 #include <string>
-#include "GameEngine.h"
+#include "core/GameEngine.h"
 
 class Game {
     GameEngine engine;
