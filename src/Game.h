@@ -1,21 +1,19 @@
 #pragma once
 
 #include <string>
-#include <SDL2/SDL.h>
+#include "Window.h"
 
 class Game {
     bool isRunning = true;
-    SDL_Window* window = nullptr;
-    SDL_Renderer* renderer = nullptr;
+    Window window;
     SDL_Texture* character = nullptr;
 
-    const int UNIT = 16;
-    const int VIEW_HEIGHT = UNIT * 9;
-    const int VIEW_WIDTH = UNIT * 16;
-    const int SCALE = 4;
+    static const int UNIT = 16;
+    static const int VIEW_HEIGHT = UNIT * 9;
+    static const int VIEW_WIDTH = UNIT * 16;
+    static const int SCALE = 4;
 
-    void initSystems();
-    void unInitSystems();
+    Renderer& getRenderer();
     SDL_Texture* loadTexture(const std::string& path);
 public:
     Game();
