@@ -15,8 +15,24 @@ void Renderer::clear() {
 }
 
 void Renderer::render(Texture *texture, Rect *dest) {
-    SDL_Rect rect = { dest->x, dest->y, dest->width, dest->height };
-    SDL_RenderCopy(renderer, texture->getSDLTexture(), nullptr, &rect);
+    render(texture, nullptr, dest);
+}
+
+void Renderer::render(Texture *texture, Rect *src, Rect *dest) {
+    SDL_Rect srcRect;
+    SDL_Rect destRect;
+
+    if(src) {
+        srcRect = { src->x, src->y, src->width, src->height };
+    }
+    if(dest) {
+        destRect = { dest->x, dest->y, dest->width, dest->height };
+    }
+
+    SDL_Rect* srcRectPtr = src ? &srcRect : nullptr;
+    SDL_Rect* destRectPtr = dest ? &destRect : nullptr;
+
+    SDL_RenderCopy(renderer, texture->getSDLTexture(), srcRectPtr, destRectPtr);
 }
 
 void Renderer::update() {

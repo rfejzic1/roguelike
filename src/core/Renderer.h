@@ -2,6 +2,8 @@
 
 #include <SDL2/SDL.h>
 #include "Rect.h"
+#include "Sprite.h"
+#include "Vector2D.h"
 
 class Texture;
 
@@ -17,6 +19,7 @@ class Renderer {
 public:
     void clear();
     void render(Texture *texture, Rect *dest);
+    void render(Texture *texture, Rect *src, Rect *dest);
     void update();
     ~Renderer();
     friend class GameEngine;
