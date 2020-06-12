@@ -1,6 +1,5 @@
 #pragma once
 
-#include <string>
 #include "core/GameEngine.h"
 
 class Game {
@@ -11,7 +10,6 @@ class Game {
     static const int VIEW_WIDTH = UNIT * 16;
     static const int SCALE = 4;
 
-    Renderer& getRenderer();
 public:
     Game();
     int run();
