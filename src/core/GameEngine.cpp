@@ -23,7 +23,7 @@ GameEngine::GameEngine(int width, int height, int scale) {
 
     renderer = new Renderer(window, width, height, scale);
     inputHandler = new InputHandler();
-    textureManager = new TextureManager(*this);
+    textureManager = new TextureManager(renderer->getSDLRenderer());
 }
 
 GameEngine::~GameEngine() {

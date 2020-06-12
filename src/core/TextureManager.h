@@ -7,9 +7,9 @@
 class GameEngine;
 
 class TextureManager : public AssetManager<Texture> {
-    GameEngine& engine;
+    SDL_Renderer* renderer = nullptr;
     Texture* loader(const std::string &uri) override;
+    explicit TextureManager(SDL_Renderer *renderer);
 public:
-    explicit TextureManager(GameEngine& gameEngine);
     friend class GameEngine;
 };

@@ -2,7 +2,7 @@
 #include "GameEngine.h"
 #include "Renderer.h"
 
-TextureManager::TextureManager(GameEngine& gameEngine) : engine(gameEngine) {}
+TextureManager::TextureManager(SDL_Renderer *renderer) : renderer(renderer) {}
 
 Texture* TextureManager::loader(const std::string &uri) {
     SDL_Texture* newTexture = nullptr;
@@ -14,7 +14,7 @@ Texture* TextureManager::loader(const std::string &uri) {
     }
 
     // Texture pointer
-    newTexture = SDL_CreateTextureFromSurface(engine.getRenderer().getSDLRenderer(), loadedSurface);
+    newTexture = SDL_CreateTextureFromSurface(renderer, loadedSurface);
     if(!newTexture) {
         SDL_Log("Error: %s", SDL_GetError());
         return nullptr;

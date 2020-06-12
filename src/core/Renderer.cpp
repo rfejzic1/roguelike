@@ -14,8 +14,9 @@ void Renderer::clear() {
     SDL_RenderClear(renderer);
 }
 
-void Renderer::render(Texture* texture, SDL_Rect *srcrect, SDL_Rect *destrect) {
-    SDL_RenderCopy(renderer, texture->getSDLTexture(), srcrect, destrect);
+void Renderer::render(Texture *texture, Rect *dest) {
+    SDL_Rect rect = { dest->x, dest->y, dest->width, dest->height };
+    SDL_RenderCopy(renderer, texture->getSDLTexture(), nullptr, &rect);
 }
 
 void Renderer::update() {
