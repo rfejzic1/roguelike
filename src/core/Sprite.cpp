@@ -36,7 +36,13 @@ void Sprite::render(Renderer *renderer, const Vector2D &position, bool flipped) 
 
     rendererFrame += 1;
     if(rendererFrame > frameRate) {
-        frameIndex = (frameIndex + 1) % frameCount;
+        if(loop) {
+            frameIndex = (frameIndex + 1) % frameCount;
+        } else {
+            if(frameIndex < frameCount - 1) {
+                frameIndex += 1;
+            }
+        }
         rendererFrame = 0;
     }
     Rect& frame = frames[frameIndex];
