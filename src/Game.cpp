@@ -12,8 +12,8 @@ int Game::run() {
     std::shared_ptr<Texture> characterWalkTexture = engine.getTextureManager().get("character_walk");
     std::shared_ptr<Texture> tilesetTexture = engine.getTextureManager().get("tileset");
 
-    Sprite blacksmith_idle = Sprite(characterIdleTexture.get(), 4, 1, true, 15);
-    Sprite blacksmith_walk = Sprite(characterWalkTexture.get(), 4, 1, false, 8);
+    Sprite blacksmith_idle = Sprite(characterIdleTexture.get(), 4, 1, true, 4);
+    Sprite blacksmith_walk = Sprite(characterWalkTexture.get(), 4, 1, true, 8);
     Sprite tree = Sprite(tilesetTexture.get(), { UNIT * 6, 0, UNIT, UNIT });
     Sprite grass = Sprite(tilesetTexture.get(), { UNIT * 6, UNIT * 1, UNIT, UNIT });
 

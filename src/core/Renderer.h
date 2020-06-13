@@ -6,6 +6,7 @@
 #include "Vector2D.h"
 
 class Texture;
+class GameEngine;
 
 class Renderer {
     const int VIEW_WIDTH;
@@ -13,14 +14,17 @@ class Renderer {
     const int SCALE;
 
     SDL_Renderer* renderer = nullptr;
+    GameEngine* gameEngine = nullptr;
 
     explicit Renderer(SDL_Window* window, int viewWidth, int viewHeight, int scale = 1);
     SDL_Renderer* getSDLRenderer();
+    void setGameEngine(GameEngine *gameEngine);
 public:
     void clear();
     void render(Texture *texture, Rect *dest);
     void render(Texture *texture, Rect *src, Rect *dest, bool flipped = false);
     void update();
+    double getFPS() const;
     ~Renderer();
     friend class GameEngine;
 };

@@ -13,14 +13,14 @@ class Sprite {
     int frameIndex = 0;
     int frameCount = 0;
     int rendererFrame = 0;
-    int frameRate = 0;
+    int framesPerSecond = 1;
     bool loop = false;
 public:
     Sprite();
     explicit Sprite(Texture* texture);
     Sprite(Texture* texture, const Rect& rect);
-    Sprite(Texture *texture, const std::vector<Rect> &frames, bool loop, int frameRate);
-    Sprite(Texture *texture, int cols, int rows, bool loop, int frameRate);
+    Sprite(Texture *texture, const std::vector<Rect> &frames, bool loop, int framesPerSecond);
+    Sprite(Texture *texture, int cols, int rows, bool loop, int framesPerSecond);
     void render(Renderer *renderer, const Vector2D &position, bool flipped = false);
     void reset();
     void setLoop(bool loop);

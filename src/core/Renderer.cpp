@@ -1,5 +1,6 @@
 #include "Renderer.h"
 #include "Texture.h"
+#include "GameEngine.h"
 
 Renderer::Renderer(SDL_Window* window, int viewWidth, int viewHeight, int scale)
     : VIEW_WIDTH(viewWidth), VIEW_HEIGHT(viewHeight), SCALE(scale)
@@ -49,4 +50,12 @@ Renderer::~Renderer() {
 
 SDL_Renderer *Renderer::getSDLRenderer() {
     return renderer;
+}
+
+void Renderer::setGameEngine(GameEngine *engine) {
+    gameEngine = engine;
+}
+
+double Renderer::getFPS() const {
+    return gameEngine->getFPS();
 }

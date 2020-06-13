@@ -22,6 +22,7 @@ GameEngine::GameEngine(int width, int height, int scale) {
             SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
 
     renderer = new Renderer(window, width, height, scale);
+    renderer->setGameEngine(this);
     inputHandler = new InputHandler();
     textureManager = new TextureManager(renderer->getSDLRenderer());
 }

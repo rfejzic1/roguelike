@@ -11,11 +11,11 @@ Sprite::Sprite(Texture *texture, const Rect &rect) : texture(texture), frameCoun
     frames.emplace_back(rect);
 }
 
-Sprite::Sprite(Texture *texture, const std::vector<Rect> &frames, bool loop, int frameRate)
-    : texture(texture), frames(frames), frameCount(frames.size()), frameRate(frameRate), loop(loop) {}
+Sprite::Sprite(Texture *texture, const std::vector<Rect> &frames, bool loop, int framesPerSecond)
+    : texture(texture), frames(frames), frameCount(frames.size()), framesPerSecond(framesPerSecond), loop(loop) {}
 
-Sprite::Sprite(Texture *texture, int cols, int rows, bool loop, int frameRate)
-    : texture(texture), frameRate(frameRate), loop(loop)
+Sprite::Sprite(Texture *texture, int cols, int rows, bool loop, int framesPerSecond)
+    : texture(texture), framesPerSecond(framesPerSecond), loop(loop)
 {
     int cellWidth = texture->getWidth() / cols;
     int cellHeight = texture->getHeight() / rows;
@@ -33,6 +33,8 @@ void Sprite::render(Renderer *renderer, const Vector2D &position, bool flipped) 
     if(frameCount == 0) {
         return;
     }
+
+    double frameRate = renderer->getFPS() / framesPerSecond;
 
     rendererFrame += 1;
     if(rendererFrame > frameRate) {
