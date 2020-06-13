@@ -15,10 +15,10 @@ void Renderer::clear() {
 }
 
 void Renderer::render(Texture *texture, Rect *dest) {
-    render(texture, nullptr, dest);
+    render(texture, nullptr, dest, false);
 }
 
-void Renderer::render(Texture *texture, Rect *src, Rect *dest) {
+void Renderer::render(Texture *texture, Rect *src, Rect *dest, bool flipped) {
     SDL_Rect srcRect;
     SDL_Rect destRect;
 
@@ -32,7 +32,8 @@ void Renderer::render(Texture *texture, Rect *src, Rect *dest) {
     SDL_Rect* srcRectPtr = src ? &srcRect : nullptr;
     SDL_Rect* destRectPtr = dest ? &destRect : nullptr;
 
-    SDL_RenderCopy(renderer, texture->getSDLTexture(), srcRectPtr, destRectPtr);
+    SDL_RendererFlip flip = flipped ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE;
+    SDL_RenderCopyEx(renderer, texture->getSDLTexture(), srcRectPtr, destRectPtr, 0, nullptr, flip);
 }
 
 void Renderer::update() {

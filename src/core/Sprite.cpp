@@ -1,6 +1,8 @@
 #include "Sprite.h"
 #include "Texture.h"
 
+Sprite::Sprite() : texture(nullptr), frameCount(0) {}
+
 Sprite::Sprite(Texture *texture) : texture(texture), frameCount(1) {
     frames.emplace_back(0, 0, texture->getWidth(), texture->getHeight());
 }
@@ -9,11 +11,11 @@ Sprite::Sprite(Texture *texture, const Rect &rect) : texture(texture), frameCoun
     frames.emplace_back(rect);
 }
 
-Sprite::Sprite(Texture *texture, const std::vector<Rect> &frames, int frameRate)
-    : texture(texture), frames(frames), frameCount(frames.size()), frameRate(frameRate) {}
+Sprite::Sprite(Texture *texture, const std::vector<Rect> &frames, bool loop, int frameRate)
+    : texture(texture), frames(frames), frameCount(frames.size()), frameRate(frameRate), loop(loop) {}
 
-Sprite::Sprite(Texture *texture, int cols, int rows, int frameRate)
-    : texture(texture), frameRate(frameRate)
+Sprite::Sprite(Texture *texture, int cols, int rows, bool loop, int frameRate)
+    : texture(texture), frameRate(frameRate), loop(loop)
 {
     int cellWidth = texture->getWidth() / cols;
     int cellHeight = texture->getHeight() / rows;
@@ -27,7 +29,11 @@ Sprite::Sprite(Texture *texture, int cols, int rows, int frameRate)
     frameCount = frames.size();
 }
 
-void Sprite::render(Renderer *renderer, const Vector2D &position) {
+void Sprite::render(Renderer *renderer, const Vector2D &position, bool flipped) {
+    if(frameCount == 0) {
+        return;
+    }
+
     rendererFrame += 1;
     if(rendererFrame > frameRate) {
         frameIndex = (frameIndex + 1) % frameCount;
@@ -35,5 +41,13 @@ void Sprite::render(Renderer *renderer, const Vector2D &position) {
     }
     Rect& frame = frames[frameIndex];
     Rect dest = { position.x, position.y, frame.width, frame.height };
-    renderer->render(texture, &frames[frameIndex], &dest);
+    renderer->render(texture, &frames[frameIndex], &dest, flipped);
+}
+
+void Sprite::reset() {
+    frameIndex = 0;
+}
+
+void Sprite::setLoop(bool loopFrames) {
+    loop = loopFrames;
 }

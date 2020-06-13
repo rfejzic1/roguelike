@@ -19,7 +19,7 @@ class Renderer {
 public:
     void clear();
     void render(Texture *texture, Rect *dest);
-    void render(Texture *texture, Rect *src, Rect *dest);
+    void render(Texture *texture, Rect *src, Rect *dest, bool flipped = false);
     void update();
     ~Renderer();
     friend class GameEngine;
