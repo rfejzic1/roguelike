@@ -2,8 +2,7 @@
 
 #include <SDL2/SDL.h>
 #include "Rect.h"
-#include "Sprite.h"
-#include "Vector2D.h"
+#include "Camera.h"
 
 class Texture;
 class GameEngine;
@@ -15,6 +14,7 @@ class Renderer {
 
     SDL_Renderer* renderer = nullptr;
     GameEngine* gameEngine = nullptr;
+    Camera camera;
 
     explicit Renderer(SDL_Window* window, int viewWidth, int viewHeight, int scale = 1);
     SDL_Renderer* getSDLRenderer();
@@ -25,6 +25,8 @@ public:
     void render(Texture *texture, Rect *src, Rect *dest, bool flipped = false);
     void update();
     double getFPS() const;
+    void setCamera(const Camera& newCamera);
+    Camera& getCamera();
     ~Renderer();
     friend class GameEngine;
 };

@@ -3,7 +3,7 @@
 #include "GameEngine.h"
 
 Renderer::Renderer(SDL_Window* window, int viewWidth, int viewHeight, int scale)
-    : VIEW_WIDTH(viewWidth), VIEW_HEIGHT(viewHeight), SCALE(scale)
+    : VIEW_WIDTH(viewWidth), VIEW_HEIGHT(viewHeight), SCALE(scale), camera()
 {
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
     SDL_RenderSetIntegerScale(renderer, SDL_TRUE);
@@ -20,6 +20,19 @@ void Renderer::render(Texture *texture, Rect *dest) {
 }
 
 void Renderer::render(Texture *texture, Rect *src, Rect *dest, bool flipped) {
+    Vector2D camPos = camera.getPosition();
+    int camOffset = VIEW_WIDTH / 2;
+
+    if(!dest ||
+        dest->x < camPos.x - camOffset ||
+        dest->x > camPos.x + VIEW_WIDTH + camOffset ||
+        dest->y < camPos.y - camOffset ||
+        dest->y > camPos.y + VIEW_HEIGHT + camOffset
+    ) {
+        // do not render; not in view
+        return;
+    }
+
     SDL_Rect srcRect;
     SDL_Rect destRect;
 
@@ -27,7 +40,7 @@ void Renderer::render(Texture *texture, Rect *src, Rect *dest, bool flipped) {
         srcRect = { src->x, src->y, src->width, src->height };
     }
     if(dest) {
-        destRect = { dest->x, dest->y, dest->width, dest->height };
+        destRect = { dest->x - camPos.x, dest->y - camPos.y, dest->width, dest->height };
     }
 
     SDL_Rect* srcRectPtr = src ? &srcRect : nullptr;
@@ -58,4 +71,12 @@ void Renderer::setGameEngine(GameEngine *engine) {
 
 double Renderer::getFPS() const {
     return gameEngine->getFPS();
+}
+
+void Renderer::setCamera(const Camera &newCamera) {
+    camera = newCamera;
+}
+
+Camera &Renderer::getCamera() {
+    return camera;
 }

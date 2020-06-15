@@ -20,39 +20,42 @@ int Game::run() {
     SpriteAnimator animator("idle", blacksmith_idle);
     animator.createState("walking", blacksmith_walk);
 
+    Camera& cam = engine.getRenderer().getCamera();
+
     double x = 0, y = 0;
     int targetX = 0, targetY = 0;
     bool moving = false;
     bool facingLeft = false;
+    const int MAP_SIZE = 16 * 10;
 
-    engine.getInputHandler().on("right", [&targetX, &moving, &facingLeft]() {
+    engine.getInputHandler().on("right", [&]() {
         if(!moving) {
             targetX += 1;
             moving = true;
             facingLeft = false;
         }
     });
-    engine.getInputHandler().on("left", [&targetX, &moving, &facingLeft]() {
+    engine.getInputHandler().on("left", [&]() {
         if(!moving) {
             targetX -= 1;
             moving = true;
             facingLeft = true;
         }
     });
-    engine.getInputHandler().on("up", [&targetY, &moving]() {
+    engine.getInputHandler().on("up", [&]() {
         if(!moving) {
             targetY -= 1;
             moving = true;
         }
     });
-    engine.getInputHandler().on("down", [&targetY, &moving]() {
+    engine.getInputHandler().on("down", [&]() {
         if(!moving) {
             targetY += 1;
             moving = true;
         }
     });
 
-    engine.loop([this, &x, &y, &targetX, &targetY, &moving, &animator, &tree, &grass, &facingLeft](double delta) {
+    engine.loop([&](double delta) {
         SDL_Log("fps: %lf", engine.getFPS());
         double step = 0.5;
 
@@ -72,8 +75,21 @@ int Game::run() {
             moving = false;
         }
 
-        for(int i = 0; i < 9; i++) {
-            for(int j = 0; j < 16; j++) {
+        if(targetX * UNIT > cam.getPosition().x + VIEW_WIDTH - UNIT) {
+            cam.moveBy({ VIEW_WIDTH, 0 });
+        }
+        if(targetX * UNIT < cam.getPosition().x) {
+            cam.moveBy({ -VIEW_WIDTH, 0 });
+        }
+        if(targetY * UNIT < cam.getPosition().y) {
+            cam.moveBy({ 0, -VIEW_HEIGHT });
+        }
+        if(targetY * UNIT > cam.getPosition().y + VIEW_HEIGHT - UNIT) {
+            cam.moveBy({ 0, VIEW_HEIGHT });
+        }
+
+        for(int i = 0; i < MAP_SIZE; i++) {
+            for(int j = 0; j < MAP_SIZE; j++) {
                 grass.render(&engine.getRenderer(), {UNIT * j, UNIT * i}, false);
             }
         }

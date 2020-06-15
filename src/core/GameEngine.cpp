@@ -85,7 +85,7 @@ void GameEngine::loop(const std::function<void(double)>& loopFunction) {
         if( frameTicks < SCREEN_TICKS_PER_FRAME ) {
             // Wait remaining time
             int deltaTicks = SCREEN_TICKS_PER_FRAME - frameTicks;
-            delta = deltaTicks / 1000.0;
+            delta = deltaTicks;
             SDL_Delay(deltaTicks);
         }
     }
