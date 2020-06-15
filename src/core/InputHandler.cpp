@@ -21,9 +21,13 @@ bool InputHandler::pollInputs() {
 
         if(event.type == SDL_KEYDOWN) {
             auto keyCode = (SDL_KeyCode) event.key.keysym.sym;
+            inputState[keyCode] = true;
             for(HandlerFunction& function : keyDownSubscription[keyCode]) {
                 function();
             }
+        } else if(event.type == SDL_KEYUP) {
+            auto keyCode = (SDL_KeyCode) event.key.keysym.sym;
+            inputState[keyCode] = false;
         }
     }
 
@@ -33,4 +37,9 @@ bool InputHandler::pollInputs() {
 void InputHandler::on(const std::string &input, const HandlerFunction &handlerFunction) {
     SDL_KeyCode keyCode = inputMapping[input];
     keyDownSubscription[keyCode].emplace_back(handlerFunction);
+}
+
+bool InputHandler::is(const std::string &input) {
+    SDL_KeyCode keyCode = inputMapping[input];
+    return inputState[keyCode];
 }

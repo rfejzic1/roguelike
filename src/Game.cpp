@@ -21,6 +21,7 @@ int Game::run() {
     animator.createState("walking", blacksmith_walk);
 
     Camera& cam = engine.getRenderer().getCamera();
+    InputHandler& inputHandler = engine.getInputHandler();
 
     double x = 0, y = 0;
     int targetX = 0, targetY = 0;
@@ -28,36 +29,28 @@ int Game::run() {
     bool facingLeft = false;
     const int MAP_SIZE = 16 * 10;
 
-    engine.getInputHandler().on("right", [&]() {
-        if(!moving) {
-            targetX += 1;
-            moving = true;
-            facingLeft = false;
-        }
-    });
-    engine.getInputHandler().on("left", [&]() {
-        if(!moving) {
-            targetX -= 1;
-            moving = true;
-            facingLeft = true;
-        }
-    });
-    engine.getInputHandler().on("up", [&]() {
-        if(!moving) {
-            targetY -= 1;
-            moving = true;
-        }
-    });
-    engine.getInputHandler().on("down", [&]() {
-        if(!moving) {
-            targetY += 1;
-            moving = true;
-        }
-    });
 
     engine.loop([&](double delta) {
         SDL_Log("fps: %lf", engine.getFPS());
         double step = 0.5;
+
+        if(!moving) {
+            if (inputHandler.is("right")) {
+                targetX += 1;
+                moving = true;
+                facingLeft = false;
+            } else if (inputHandler.is("left")) {
+                targetX -= 1;
+                moving = true;
+                facingLeft = true;
+            } else if (inputHandler.is("up")) {
+                targetY -= 1;
+                moving = true;
+            } else if (inputHandler.is("down")) {
+                targetY += 1;
+                moving = true;
+            }
+        }
 
         if(x < targetX * UNIT) {
             x += step;
