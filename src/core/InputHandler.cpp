@@ -9,6 +9,7 @@ void InputHandler::initializeInputs() {
     inputMapping["left"] = SDLK_LEFT;
     inputMapping["up"] = SDLK_UP;
     inputMapping["down"] = SDLK_DOWN;
+    inputMapping["action"] = SDLK_SPACE;
 }
 
 // TODO: Think of a better way to handle quit event!
@@ -21,13 +22,15 @@ bool InputHandler::pollInputs() {
 
         if(event.type == SDL_KEYDOWN) {
             auto keyCode = (SDL_KeyCode) event.key.keysym.sym;
-            inputState[keyCode] = true;
+            if(inputState[keyCode] == KeyState::UP) {
+                inputState[keyCode] = KeyState::PRESSED;
+            }
             for(HandlerFunction& function : keyDownSubscription[keyCode]) {
                 function();
             }
         } else if(event.type == SDL_KEYUP) {
             auto keyCode = (SDL_KeyCode) event.key.keysym.sym;
-            inputState[keyCode] = false;
+            inputState[keyCode] = KeyState::UP;
         }
     }
 
@@ -41,5 +44,16 @@ void InputHandler::on(const std::string &input, const HandlerFunction &handlerFu
 
 bool InputHandler::is(const std::string &input) {
     SDL_KeyCode keyCode = inputMapping[input];
-    return inputState[keyCode];
+    KeyState keyState = inputState[keyCode];
+    return keyState == KeyState::DOWN || keyState == KeyState::PRESSED;
+}
+
+bool InputHandler::isPressed(const std::string &input) {
+    SDL_KeyCode keyCode = inputMapping[input];
+    KeyState keyState = inputState[keyCode];
+    bool isPressed = keyState == KeyState::PRESSED;
+    if(isPressed) {
+        inputState[keyCode] = KeyState::DOWN;
+    }
+    return isPressed;
 }
