@@ -68,18 +68,7 @@ int Game::run() {
             moving = false;
         }
 
-        if(targetX * UNIT > cam.getPosition().x + VIEW_WIDTH - UNIT) {
-            cam.moveBy({ VIEW_WIDTH, 0 });
-        }
-        if(targetX * UNIT < cam.getPosition().x) {
-            cam.moveBy({ -VIEW_WIDTH, 0 });
-        }
-        if(targetY * UNIT < cam.getPosition().y) {
-            cam.moveBy({ 0, -VIEW_HEIGHT });
-        }
-        if(targetY * UNIT > cam.getPosition().y + VIEW_HEIGHT - UNIT) {
-            cam.moveBy({ 0, VIEW_HEIGHT });
-        }
+        cam.snapFollowTarget({targetX * UNIT, targetY * UNIT }, VIEW_WIDTH, VIEW_HEIGHT);
 
         for(int i = 0; i < MAP_SIZE; i++) {
             for(int j = 0; j < MAP_SIZE; j++) {
