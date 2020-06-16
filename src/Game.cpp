@@ -1,5 +1,6 @@
 #include "Game.h"
 #include "core/SpriteAnimator.h"
+#include "MapBuilder.h"
 
 Game::Game() : engine(VIEW_WIDTH, VIEW_HEIGHT, SCALE) {
     engine.getTextureManager().load("character_idle", "/home/rijad/Projects/roguelike/images/character_idle.png");
@@ -23,11 +24,15 @@ int Game::run() {
     Camera& cam = engine.getRenderer().getCamera();
     InputHandler& inputHandler = engine.getInputHandler();
 
+    std::shared_ptr<Map> map = MapBuilder(32, 32)
+            .fill(&grass, 16, 9)
+            .build();
+
     double x = 0, y = 0;
     int targetX = 0, targetY = 0;
     bool moving = false;
     bool facingLeft = false;
-    const int MAP_SIZE = 16 * 10;
+    bool showMap = true;
 
 
     engine.loop([&](double delta) {
@@ -70,10 +75,12 @@ int Game::run() {
 
         cam.snapFollowTarget({targetX * UNIT, targetY * UNIT }, VIEW_WIDTH, VIEW_HEIGHT);
 
-        for(int i = 0; i < MAP_SIZE; i++) {
-            for(int j = 0; j < MAP_SIZE; j++) {
-                grass.render(&engine.getRenderer(), {UNIT * j, UNIT * i}, false);
-            }
+        if(inputHandler.isPressed("action")) {
+            showMap = !showMap;
+        }
+
+        if(showMap) {
+            map->render(&engine.getRenderer());
         }
 
         animator.setState(moving ? "walking" : "idle");
