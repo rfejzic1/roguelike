@@ -22,9 +22,9 @@ Matrix<T>::Matrix(int rows, int cols, T defaultValue)
     : rows(rows), cols(cols), matrix(nullptr)
 {
     try{
-        matrix = new int*[rows] {nullptr};
+        matrix = new T*[rows] {nullptr};
         for(int i = 0; i < rows; i++) {
-            matrix[i] = new int[cols];
+            matrix[i] = new T[cols];
             std::fill(matrix[i], matrix[i] + cols, defaultValue);
         }
     } catch(std::bad_alloc& err) {
