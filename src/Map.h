@@ -6,13 +6,8 @@
 class Sprite;
 class Renderer;
 
-enum class LightLevel {
-    UNLIT, DARK, LIT, EMISSIVE
-};
-
 struct MapTile {
     Sprite* tileSprite; // TODO: Use integer IDs for tile sprites or use names?
-    LightLevel lightLevel;
     bool collidable;
 };
 
