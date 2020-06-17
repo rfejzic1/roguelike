@@ -3,7 +3,8 @@
 #include "core/SpriteAtlas.h"
 #include "MapBuilder.h"
 #include "TileSet.h"
-#include "Entity.h"
+#include "Hero.h"
+#include "core/Timer.h"
 
 #include <ctime>
 
@@ -18,7 +19,7 @@ int Game::run() {
 
     SpriteAtlas characterSprites(characterTexture);
     characterSprites.markGrid("idle", { 0,0,UNIT,UNIT }, 4, 1, true, 4);
-    characterSprites.markGrid("walk", { 0,UNIT,UNIT,UNIT }, 4, 1, true, 8);
+    characterSprites.markGrid("walk", { 0,UNIT,UNIT,UNIT }, 4, 1, true, 4);
 
     SpriteAtlas tileSetSprites(tileSetTexture);
     tileSetSprites.mark("tree", {UNIT * 6, 0, UNIT, UNIT });
@@ -27,7 +28,7 @@ int Game::run() {
     SpriteAnimator animator("idle", *characterSprites.get("idle"));
     animator.createState("walking", *characterSprites.get("walk"));
 
-    Entity character({1, 1}, animator);
+    std::shared_ptr<Entity> character = std::make_shared<Hero>(Vector2D{8 * UNIT, 4 * UNIT}, animator);
 
     TileSet tileSet(tileSetSprites);
     tileSet.put("grass", "grass", false);
@@ -49,55 +50,26 @@ int Game::run() {
             .put(tileSet.get("tree"), randomPos(16, 9))
             .build();
 
-    double x = 0, y = 0;
-    int targetX = 0, targetY = 0;
-    bool moving = false;
-    bool facingLeft = false;
+    std::shared_ptr<Action> currentAction = nullptr;
 
     engine.loop([&](double delta) {
-        SDL_Log("fps: %lf", engine.getFPS());
-        double step = 0.5;
+//        SDL_Log("fps: %lf", engine.getFPS());
 
-        if(!moving) {
-            if (inputHandler.is("right")) {
-                targetX += 1;
-                moving = true;
-                facingLeft = false;
-            } else if (inputHandler.is("left")) {
-                targetX -= 1;
-                moving = true;
-                facingLeft = true;
-            } else if (inputHandler.is("up")) {
-                targetY -= 1;
-                moving = true;
-            } else if (inputHandler.is("down")) {
-                targetY += 1;
-                moving = true;
-            }
+        if(!currentAction) {
+            currentAction = character->takeTurn();
         }
 
-        if(x < targetX * UNIT) {
-            x += step;
-        }
-        if(x > targetX * UNIT) {
-            x -= step;
-        }
-        if(y < targetY * UNIT) {
-            y += step;
-        }
-        if(y > targetY * UNIT) {
-            y -= step;
-        }
-        if(x == targetX * UNIT && y == targetY * UNIT) {
-            moving = false;
+        ActionState actionState = currentAction->perform();
+        if(actionState == ActionState::DONE) {
+            std::shared_ptr<ActionResult> result = currentAction->getResult();
+            SDL_Log("Result: %d", *result);
+            currentAction = nullptr;
         }
 
-        cam.snapFollowTarget({targetX * UNIT, targetY * UNIT }, VIEW_WIDTH, VIEW_HEIGHT);
+        cam.snapFollowTarget(character->getPosition(), VIEW_WIDTH, VIEW_HEIGHT);
 
         map->render(&engine.getRenderer());
-
-        animator.setState(moving ? "walking" : "idle");
-        character.render(&engine.getRenderer());
+        character->render(&engine.getRenderer());
     });
 
     return 0;
