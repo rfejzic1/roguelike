@@ -33,4 +33,10 @@ struct Vector2D {
     Vector2D operator -(const Vector2D& other) const {
         return *this + (-other);
     }
+
+    Vector2D operator *(int value) {
+        return { this->x * value, this->y * value };
+    }
+
+    // TODO: Implement multiplication operator!!!
 };
