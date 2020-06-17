@@ -22,3 +22,8 @@ MapBuilder &MapBuilder::put(const std::shared_ptr<MapTile> &tile, const Vector2D
     map->put(position.x, position.y, *tile);
     return *this;
 }
+
+MapBuilder &MapBuilder::addLayer() {
+    map->addLayer();
+    return *this;
+}

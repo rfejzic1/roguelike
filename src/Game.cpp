@@ -33,6 +33,7 @@ int Game::run() {
 
     std::shared_ptr<Map> map = MapBuilder(32, 32)
             .fill(tileSet.get("grass"), 16, 9)
+            .addLayer()
             .put(tileSet.get("tree"), { 2, 6 })
             .put(tileSet.get("tree"), { 6, 4 })
             .build();

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <vector>
 #include <memory>
 #include "Matrix.h"
 
@@ -14,15 +15,22 @@ struct MapTile {
         : sprite(sprite), collidable(collidable) {}
 };
 
+typedef Matrix<std::shared_ptr<MapTile>> MapLayer;
+
 class Map {
     int width;
     int height;
-    Matrix<std::shared_ptr<MapTile>> map;
+    std::vector<MapLayer> mapLayers;
+    int currentLayer;
+
+    MapLayer& getCurrentLayer();
 public:
     Map(int mapWidth, int mapHeight);
+    void addLayer();
     void put(int x, int y, const MapTile& tile);
     void remove(int x, int y);
     void render(Renderer* renderer);
+    void renderLayer(Renderer* renderer, int layer);
     int getWidth() const;
     int getHeight() const;
 };
