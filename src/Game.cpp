@@ -3,6 +3,7 @@
 #include "core/SpriteAtlas.h"
 #include "MapBuilder.h"
 #include "TileSet.h"
+#include "Entity.h"
 
 #include <ctime>
 
@@ -25,6 +26,8 @@ int Game::run() {
 
     SpriteAnimator animator("idle", *characterSprites.get("idle"));
     animator.createState("walking", *characterSprites.get("walk"));
+
+    Entity character({1, 1}, animator);
 
     TileSet tileSet(tileSetSprites);
     tileSet.put("grass", "grass", false);
@@ -94,7 +97,7 @@ int Game::run() {
         map->render(&engine.getRenderer());
 
         animator.setState(moving ? "walking" : "idle");
-        animator.getSprite().render(&engine.getRenderer(), {(int) x, (int) y}, facingLeft);
+        character.render(&engine.getRenderer());
     });
 
     return 0;

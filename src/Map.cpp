@@ -25,8 +25,6 @@ void Map::renderLayer(Renderer* renderer, int layer) {
     }
 }
 
-// Make a GameObject class and have it have an abstract "void render()" method
-// Which derived classes can implement, like this Map class should
 void Map::render(Renderer *renderer) {
     for(int i = 0; i < mapLayers.size(); i++) {
         renderLayer(renderer, i);

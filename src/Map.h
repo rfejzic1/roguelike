@@ -3,6 +3,7 @@
 #include <vector>
 #include <memory>
 #include "Matrix.h"
+#include "core/Renderable.h"
 
 class Sprite;
 class Renderer;
@@ -17,7 +18,7 @@ struct MapTile {
 
 typedef Matrix<std::shared_ptr<MapTile>> MapLayer;
 
-class Map {
+class Map : public Renderable {
     int width;
     int height;
     int tileSize;
@@ -30,7 +31,7 @@ public:
     void addLayer();
     void put(int x, int y, const MapTile& tile);
     void remove(int x, int y);
-    void render(Renderer* renderer);
+    void render(Renderer* renderer) override;
     void renderLayer(Renderer* renderer, int layer);
     int getWidth() const;
     int getHeight() const;
