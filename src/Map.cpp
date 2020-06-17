@@ -16,8 +16,7 @@ void Map::render(Renderer *renderer) {
         for(int j = 0; j < width; j++) {
             auto tile = map.get(i, j);
             if(tile) {
-                Sprite* tileSprite = tile->tileSprite;
-                tileSprite->render(renderer, { j * UNIT, i * UNIT });
+                tile->sprite->render(renderer, { j * UNIT, i * UNIT });
             }
         }
     }
@@ -29,4 +28,12 @@ void Map::put(int x, int y, const MapTile &tile) {
 
 void Map::remove(int x, int y) {
     map.set(y, x, nullptr);
+}
+
+int Map::getWidth() const {
+    return width;
+}
+
+int Map::getHeight() const {
+    return height;
 }

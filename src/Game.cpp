@@ -2,6 +2,7 @@
 #include "core/SpriteAnimator.h"
 #include "core/SpriteAtlas.h"
 #include "MapBuilder.h"
+#include "TileSet.h"
 
 Game::Game() : engine(VIEW_WIDTH, VIEW_HEIGHT, SCALE) {
     engine.getTextureManager().load("character", "/home/rijad/Projects/roguelike/images/character.png");
@@ -16,18 +17,24 @@ int Game::run() {
     characterSprites.markGrid("idle", { 0,0,UNIT,UNIT }, 4, 1, true, 4);
     characterSprites.markGrid("walk", { 0,UNIT,UNIT,UNIT }, 4, 1, true, 8);
 
-    SpriteAtlas tileSet(tileSetTexture);
-    tileSet.mark("tree", {UNIT * 6, 0, UNIT, UNIT });
-    tileSet.mark("grass", {UNIT * 6, UNIT * 1, UNIT, UNIT });
+    SpriteAtlas tileSetSprites(tileSetTexture);
+    tileSetSprites.mark("tree", {UNIT * 6, 0, UNIT, UNIT });
+    tileSetSprites.mark("grass", {UNIT * 6, UNIT * 1, UNIT, UNIT });
 
     SpriteAnimator animator("idle", *characterSprites.get("idle"));
     animator.createState("walking", *characterSprites.get("walk"));
+
+    TileSet tileSet(tileSetSprites);
+    tileSet.put("grass", "grass", false);
+    tileSet.put("tree", "tree", true);
 
     Camera& cam = engine.getRenderer().getCamera();
     InputHandler& inputHandler = engine.getInputHandler();
 
     std::shared_ptr<Map> map = MapBuilder(32, 32)
-            .fill(tileSet.get("grass").get(), 16, 9)
+            .fill(tileSet.get("grass"), 16, 9)
+            .put(tileSet.get("tree"), { 2, 6 })
+            .put(tileSet.get("tree"), { 6, 4 })
             .build();
 
     double x = 0, y = 0;
@@ -86,9 +93,6 @@ int Game::run() {
         }
 
         animator.setState(moving ? "walking" : "idle");
-
-        tileSet.get("tree")->render(&engine.getRenderer(), {UNIT * 2, UNIT * 6});
-        tileSet.get("tree")->render(&engine.getRenderer(), {UNIT * 6, UNIT * 4});
         animator.getSprite().render(&engine.getRenderer(), {(int) x, (int) y}, facingLeft);
     });
 

@@ -7,8 +7,11 @@ class Sprite;
 class Renderer;
 
 struct MapTile {
-    Sprite* tileSprite; // TODO: Use integer IDs for tile sprites or use names?
+    std::shared_ptr<Sprite> sprite;
     bool collidable;
+
+    MapTile(const std::shared_ptr<Sprite>& sprite, bool collidable)
+        : sprite(sprite), collidable(collidable) {}
 };
 
 class Map {
@@ -20,4 +23,6 @@ public:
     void put(int x, int y, const MapTile& tile);
     void remove(int x, int y);
     void render(Renderer* renderer);
+    int getWidth() const;
+    int getHeight() const;
 };
