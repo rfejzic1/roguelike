@@ -4,6 +4,9 @@
 #include "MapBuilder.h"
 #include "TileSet.h"
 
+#include <random>
+#include <ctime>
+
 Game::Game() : engine(VIEW_WIDTH, VIEW_HEIGHT, SCALE) {
     engine.getTextureManager().load("character", "/home/rijad/Projects/roguelike/images/character.png");
     engine.getTextureManager().load("tileset", "/home/rijad/Projects/roguelike/images/tileset.png");
@@ -31,11 +34,17 @@ int Game::run() {
     Camera& cam = engine.getRenderer().getCamera();
     InputHandler& inputHandler = engine.getInputHandler();
 
+    srand(time(nullptr));
+    auto randomPos = [&](int rangeX, int rangeY) {
+        return Vector2D(rand() % rangeX, rand() % rangeY);
+    };
+
     std::shared_ptr<Map> map = MapBuilder(32, 32, UNIT)
             .fill(tileSet.get("grass"), 16, 9)
             .addLayer()
-            .put(tileSet.get("tree"), { 2, 6 })
-            .put(tileSet.get("tree"), { 6, 4 })
+            .put(tileSet.get("tree"), randomPos(16, 9))
+            .put(tileSet.get("tree"), randomPos(16, 9))
+            .put(tileSet.get("tree"), randomPos(16, 9))
             .build();
 
     double x = 0, y = 0;
