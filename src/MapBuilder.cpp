@@ -1,7 +1,7 @@
 #include "MapBuilder.h"
 
-MapBuilder::MapBuilder(int width, int height)
-    : map(std::make_shared<Map>(width, height)) {}
+MapBuilder::MapBuilder(int width, int height, int tileSize)
+    : map(std::make_shared<Map>(width, height, tileSize)) {}
 
 std::shared_ptr<Map> MapBuilder::build() {
     std::shared_ptr<Map> toReturn = map;

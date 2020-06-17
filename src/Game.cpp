@@ -31,7 +31,7 @@ int Game::run() {
     Camera& cam = engine.getRenderer().getCamera();
     InputHandler& inputHandler = engine.getInputHandler();
 
-    std::shared_ptr<Map> map = MapBuilder(32, 32)
+    std::shared_ptr<Map> map = MapBuilder(32, 32, UNIT)
             .fill(tileSet.get("grass"), 16, 9)
             .addLayer()
             .put(tileSet.get("tree"), { 2, 6 })

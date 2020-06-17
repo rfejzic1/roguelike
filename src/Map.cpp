@@ -2,8 +2,8 @@
 #include "core/Renderer.h"
 #include "core/Sprite.h"
 
-Map::Map(int mapWidth, int mapHeight)
-    : width(mapWidth), height(mapHeight)
+Map::Map(int mapWidth, int mapHeight, int tileSize)
+    : width(mapWidth), height(mapHeight), tileSize(tileSize)
 {
     addLayer();
     currentLayer = 0;
@@ -15,12 +15,11 @@ void Map::addLayer() {
 }
 
 void Map::renderLayer(Renderer* renderer, int layer) {
-    const int UNIT = 16;
     for(int i = 0; i < height; i++) {
         for(int j = 0; j < width; j++) {
             auto tile = mapLayers[layer].get(i, j);
             if(tile) {
-                tile->sprite->render(renderer, { j * UNIT, i * UNIT });
+                tile->sprite->render(renderer, {j * tileSize, i * tileSize });
             }
         }
     }
