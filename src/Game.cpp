@@ -4,7 +4,6 @@
 #include "MapBuilder.h"
 #include "TileSet.h"
 
-#include <random>
 #include <ctime>
 
 Game::Game() : engine(VIEW_WIDTH, VIEW_HEIGHT, SCALE) {
@@ -51,8 +50,6 @@ int Game::run() {
     int targetX = 0, targetY = 0;
     bool moving = false;
     bool facingLeft = false;
-    bool showMap = true;
-
 
     engine.loop([&](double delta) {
         SDL_Log("fps: %lf", engine.getFPS());
@@ -94,13 +91,7 @@ int Game::run() {
 
         cam.snapFollowTarget({targetX * UNIT, targetY * UNIT }, VIEW_WIDTH, VIEW_HEIGHT);
 
-        if(inputHandler.isPressed("action")) {
-            showMap = !showMap;
-        }
-
-        if(showMap) {
-            map->render(&engine.getRenderer());
-        }
+        map->render(&engine.getRenderer());
 
         animator.setState(moving ? "walking" : "idle");
         animator.getSprite().render(&engine.getRenderer(), {(int) x, (int) y}, facingLeft);

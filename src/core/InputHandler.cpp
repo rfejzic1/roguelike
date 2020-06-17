@@ -14,6 +14,13 @@ void InputHandler::initializeInputs() {
 
 // TODO: Think of a better way to handle quit event!
 bool InputHandler::pollInputs() {
+
+    for(auto& it : inputState) {
+        if(it.second == KeyState::PRESSED) {
+            inputState[it.first] = KeyState::DOWN;
+        }
+    }
+
     SDL_Event event;
     while(SDL_PollEvent(&event) != 0) {
         if(event.type == SDL_QUIT) {
@@ -51,9 +58,5 @@ bool InputHandler::is(const std::string &input) {
 bool InputHandler::isPressed(const std::string &input) {
     SDL_KeyCode keyCode = inputMapping[input];
     KeyState keyState = inputState[keyCode];
-    bool isPressed = keyState == KeyState::PRESSED;
-    if(isPressed) {
-        inputState[keyCode] = KeyState::DOWN;
-    }
-    return isPressed;
+    return keyState == KeyState::PRESSED;
 }
