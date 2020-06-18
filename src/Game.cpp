@@ -20,6 +20,12 @@ int Game::run() {
     std::shared_ptr<Texture> skeletonTexture = engine.getTextureManager().get("skeleton");
     std::shared_ptr<Texture> tileSetTexture = engine.getTextureManager().get("tileset");
 
+    // Turn indicator sprite
+    Sprite turnIndicatorSprite(tileSetTexture, {
+            { 5 * UNIT, 3 * UNIT, UNIT, UNIT },
+            { 6 * UNIT, 3 * UNIT, UNIT, UNIT }
+    }, true, 1);
+
     // Character SpriteAtlas
     SpriteAtlas characterSprites(characterTexture);
     characterSprites.markGrid("idle", { 0,0,UNIT,UNIT }, 4, 1, true, 4);
@@ -84,6 +90,7 @@ int Game::run() {
         for(auto& entity : turnManager.getEntities()) {
             entity->render(&engine.getRenderer());
         }
+        turnIndicatorSprite.render(&engine.getRenderer(), turnManager.getCurrentEntity()->getPosition());
     });
 
     return 0;

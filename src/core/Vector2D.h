@@ -34,9 +34,16 @@ struct Vector2D {
         return *this + (-other);
     }
 
-    Vector2D operator *(int value) {
+    Vector2D operator *(int value) const {
         return { this->x * value, this->y * value };
     }
 
-    // TODO: Implement multiplication operator!!!
+    bool operator ==(const Vector2D& other) const {
+        return this->x == other.x && this->y == other.y;
+    }
+
+    bool operator !=(const Vector2D& other) const {
+        return !(*this == other);
+    }
+
 };
