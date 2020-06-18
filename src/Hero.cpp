@@ -1,12 +1,12 @@
 #include "Hero.h"
 #include "core/GameEngine.h"
-#include "actions/MoveAction.h"
+#include "actions/PlayerInputAction.h"
 
 
-Hero::Hero(const Vector2D &position, const SpriteAnimator &animator)
-    : Entity(position, animator), rng(dev()), randomInt(0, 4) {}
+Hero::Hero(GameEngine& gameEngine, const Vector2D &position, const SpriteAnimator &animator)
+    : Entity(position, animator), engine(gameEngine) {}
 
 std::shared_ptr<Action> Hero::takeTurn() {
-    auto randomDir = (Direction) randomInt(rng);
-    return std::make_shared<MoveAction>(animator, position, randomDir);
+    animator.setState("walk");
+    return std::make_shared<PlayerInputAction>(this, engine.getInputHandler());
 }

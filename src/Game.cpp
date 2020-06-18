@@ -19,7 +19,7 @@ int Game::run() {
 
     SpriteAtlas characterSprites(characterTexture);
     characterSprites.markGrid("idle", { 0,0,UNIT,UNIT }, 4, 1, true, 4);
-    characterSprites.markGrid("walk", { 0,UNIT,UNIT,UNIT }, 4, 1, true, 4);
+    characterSprites.markGrid("walk", { 0,UNIT,UNIT,UNIT }, 4, 1, true, 16);
 
     SpriteAtlas tileSetSprites(tileSetTexture);
     tileSetSprites.mark("tree", {UNIT * 6, 0, UNIT, UNIT });
@@ -28,7 +28,7 @@ int Game::run() {
     SpriteAnimator animator("idle", *characterSprites.get("idle"));
     animator.createState("walking", *characterSprites.get("walk"));
 
-    std::shared_ptr<Entity> character = std::make_shared<Hero>(Vector2D{8 * UNIT, 4 * UNIT}, animator);
+    std::shared_ptr<Entity> character = std::make_shared<Hero>(engine, Vector2D{8 * UNIT, 4 * UNIT}, animator);
 
     TileSet tileSet(tileSetSprites);
     tileSet.put("grass", "grass", false);
@@ -61,9 +61,7 @@ int Game::run() {
 
         ActionState actionState = currentAction->perform();
         if(actionState == ActionState::DONE) {
-            std::shared_ptr<ActionResult> result = currentAction->getResult();
-            SDL_Log("Result: %d", *result);
-            currentAction = nullptr;
+            currentAction = currentAction->hasChainAction() ? currentAction->getChainAction() : nullptr;
         }
 
         cam.snapFollowTarget(character->getPosition(), VIEW_WIDTH, VIEW_HEIGHT);
