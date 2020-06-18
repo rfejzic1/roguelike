@@ -1,7 +1,7 @@
 #include "MoveAction.h"
 
-MoveAction::MoveAction(Entity *entity, const Direction &direction)
-    : entity(entity), direction(direction),
+MoveAction::MoveAction(Entity *entity, const Direction &direction, bool interpolate)
+    : entity(entity), direction(direction), interpolate(interpolate),
       targetPosition(entity->getPosition() + getTargetVector(direction) * UNIT)
 {
     entity->getSpriteAnimator().setState("walk");
@@ -14,19 +14,31 @@ ActionState MoveAction::perform() {
 
     Vector2D& position = entity->getPosition();
 
-    if(position.x < targetX) {
-        position.x += step;
-        entity->setFacingLeft(false);
-    }
-    if(position.x > targetX) {
-        position.x -= step;
-        entity->setFacingLeft(true);
-    }
-    if(position.y < targetY) {
-        position.y += step;
-    }
-    if(position.y > targetY) {
-        position.y -= step;
+    if(interpolate) {
+        if(position.x < targetX) {
+            position.x += step;
+            entity->setFacingLeft(false);
+        }
+        if(position.x > targetX) {
+            position.x -= step;
+            entity->setFacingLeft(true);
+        }
+        if(position.y < targetY) {
+            position.y += step;
+        }
+        if(position.y > targetY) {
+            position.y -= step;
+        }
+    } else {
+        if(position.x < targetX) {
+            entity->setFacingLeft(false);
+        }
+        if(position.x > targetX) {
+            entity->setFacingLeft(true);
+        }
+
+        position.x = targetX;
+        position.y = targetY;
     }
 
     if(position.x == targetX && position.y == targetY) {
