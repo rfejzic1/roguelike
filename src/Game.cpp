@@ -73,6 +73,9 @@ int Game::run() {
     engine.loop([&](double delta) {
         SDL_Log("fps: %lf", engine.getFPS());
 
+        if(!turnManager.hasAction()) {
+            turnManager.next();
+        }
         turnManager.update();
 
         cam.snapFollowTarget(character->getPosition(), VIEW_WIDTH, VIEW_HEIGHT);
