@@ -3,14 +3,14 @@
 #include "Action.h"
 #include "../core/Vector2D.h"
 #include "../core/SpriteAnimator.h"
+#include "../Entity.h"
 
 enum class Direction {
     RIGHT, UP, LEFT, DOWN, NONE
 };
 
 class MoveAction : public Action {
-    SpriteAnimator& animator;
-    Vector2D& position;
+    Entity* entity;
     Direction direction;
     Vector2D targetPosition;
 
@@ -19,6 +19,6 @@ class MoveAction : public Action {
 
     static Vector2D getTargetVector(const Direction& dir);
 public:
-    MoveAction(SpriteAnimator &animator, Vector2D &position, const Direction &direction);
+    MoveAction(Entity *entity, const Direction &direction);
     ActionState perform() override;
 };

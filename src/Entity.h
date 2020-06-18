@@ -16,6 +16,8 @@ public:
     Entity(const Vector2D &position, const SpriteAnimator &animator);
     void render(Renderer *renderer) override;
     virtual std::shared_ptr<Action> takeTurn() = 0;
-    Vector2D getPosition() const;
+    Vector2D& getPosition();
+    SpriteAnimator& getSpriteAnimator();
+    void setFacingLeft(bool left);
     ~Entity() override = default;
 };

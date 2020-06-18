@@ -9,6 +9,14 @@ void Entity::render(Renderer *renderer) {
     animator.getSprite().render(renderer, position, facingLeft);
 }
 
-Vector2D Entity::getPosition() const {
+SpriteAnimator &Entity::getSpriteAnimator() {
+    return animator;
+}
+
+Vector2D& Entity::getPosition() {
     return position;
+}
+
+void Entity::setFacingLeft(bool left) {
+    facingLeft = left;
 }

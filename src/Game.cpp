@@ -26,7 +26,7 @@ int Game::run() {
     tileSetSprites.mark("grass", {UNIT * 6, UNIT * 1, UNIT, UNIT });
 
     SpriteAnimator animator("idle", *characterSprites.get("idle"));
-    animator.createState("walking", *characterSprites.get("walk"));
+    animator.createState("walk", *characterSprites.get("walk"));
 
     std::shared_ptr<Entity> character = std::make_shared<Hero>(engine, Vector2D{8 * UNIT, 4 * UNIT}, animator);
 

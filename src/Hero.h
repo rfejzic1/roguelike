@@ -65,5 +65,4 @@ class Hero : public Entity {
 public:
     Hero(GameEngine& gameEngine, const Vector2D &position, const SpriteAnimator &animator);
     std::shared_ptr<Action> takeTurn() override;
-    friend class PlayerInputAction;
 };

@@ -7,6 +7,5 @@ Hero::Hero(GameEngine& gameEngine, const Vector2D &position, const SpriteAnimato
     : Entity(position, animator), engine(gameEngine) {}
 
 std::shared_ptr<Action> Hero::takeTurn() {
-    animator.setState("walk");
     return std::make_shared<PlayerInputAction>(this, engine.getInputHandler());
 }

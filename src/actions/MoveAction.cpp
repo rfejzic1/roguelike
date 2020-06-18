@@ -1,10 +1,10 @@
 #include "MoveAction.h"
 
-MoveAction::MoveAction(SpriteAnimator& animator, Vector2D& position, const Direction& direction)
-    : animator(animator), position(position), direction(direction),
-      targetPosition(position + getTargetVector(direction) * UNIT)
+MoveAction::MoveAction(Entity *entity, const Direction &direction)
+    : entity(entity), direction(direction),
+      targetPosition(entity->getPosition() + getTargetVector(direction) * UNIT)
 {
-    animator.setState("walk");
+    entity->getSpriteAnimator().setState("walk");
 }
 
 ActionState MoveAction::perform() {
@@ -12,11 +12,15 @@ ActionState MoveAction::perform() {
     int targetX = targetPosition.x;
     int targetY = targetPosition.y;
 
+    Vector2D& position = entity->getPosition();
+
     if(position.x < targetX) {
         position.x += step;
+        entity->setFacingLeft(false);
     }
     if(position.x > targetX) {
         position.x -= step;
+        entity->setFacingLeft(true);
     }
     if(position.y < targetY) {
         position.y += step;
@@ -26,7 +30,7 @@ ActionState MoveAction::perform() {
     }
 
     if(position.x == targetX && position.y == targetY) {
-        animator.setState("idle");
+        entity->getSpriteAnimator().setState("idle");
         result = std::make_shared<ActionResult>(ActionResult::GOOD);
         return ActionState::DONE;
     }

@@ -22,7 +22,7 @@ ActionState PlayerInputAction::perform() {
     }
 
     if(moveDir != Direction::NONE) {
-        chainAction = std::make_shared<MoveAction>(hero->animator, hero->position, moveDir);
+        chainAction = std::make_shared<MoveAction>(hero, moveDir);
         return ActionState::DONE;
     }
 
