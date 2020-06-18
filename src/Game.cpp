@@ -4,10 +4,9 @@
 #include "MapBuilder.h"
 #include "TileSet.h"
 #include "Hero.h"
-#include "core/Timer.h"
 #include "Monster.h"
+#include "TurnManager.h"
 
-#include <ctime>
 
 Game::Game() : engine(VIEW_WIDTH, VIEW_HEIGHT, SCALE) {
     engine.getTextureManager().load("character", "/home/rijad/Projects/roguelike/images/character.png");
@@ -47,6 +46,9 @@ int Game::run() {
     // Entities
     std::shared_ptr<Entity> character = std::make_shared<Hero>(engine, Vector2D{8 * UNIT, 4 * UNIT}, characterAnimator);
     std::shared_ptr<Entity> skeleton = std::make_shared<Monster>(Vector2D{12 * UNIT, 2 * UNIT}, skeletonAnimator);
+    std::shared_ptr<Entity> skeleton2 = std::make_shared<Monster>(Vector2D{3 * UNIT, 5 * UNIT}, skeletonAnimator);
+    std::shared_ptr<Entity> skeleton3 = std::make_shared<Monster>(Vector2D{1 * UNIT, 2 * UNIT}, skeletonAnimator);
+    std::shared_ptr<Entity> skeleton4 = std::make_shared<Monster>(Vector2D{6 * UNIT, 6 * UNIT}, skeletonAnimator);
 
     // TileSet
     TileSet tileSet(tileSetSprites);
@@ -66,33 +68,17 @@ int Game::run() {
             .put(tileSet.get("tree"), {9, 5})
             .build();
 
-    // Turn processing...
-    unsigned long currentEntityIndex = 0;
-    std::vector<std::shared_ptr<Entity>> entities {
-        character, skeleton
-    };
-    std::shared_ptr<Action> currentAction = nullptr;
+    TurnManager turnManager ({ character, skeleton, skeleton2, skeleton3, skeleton4 });
 
     engine.loop([&](double delta) {
-//        SDL_Log("fps: %lf", engine.getFPS());
+        SDL_Log("fps: %lf", engine.getFPS());
 
-        if(!currentAction) {
-            currentAction = entities[currentEntityIndex]->takeTurn();
-        }
-
-        ActionState actionState = currentAction->perform();
-        if(actionState == ActionState::DONE) {
-            currentAction = currentAction->hasChainAction() ? currentAction->getChainAction() : nullptr;
-            // If the current entity has no more chaining actions, process next entity...
-            if(currentAction == nullptr) {
-                currentEntityIndex = (currentEntityIndex + 1) % entities.size();
-            }
-        }
+        turnManager.update();
 
         cam.snapFollowTarget(character->getPosition(), VIEW_WIDTH, VIEW_HEIGHT);
 
         map->render(&engine.getRenderer());
-        for(auto& entity : entities) {
+        for(auto& entity : turnManager.getEntities()) {
             entity->render(&engine.getRenderer());
         }
     });
