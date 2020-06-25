@@ -1,7 +1,6 @@
 #include "PlayerInputAction.h"
 #include "MoveAction.h"
 #include "../Hero.h"
-#include "../GameManager.h"
 
 PlayerInputAction::PlayerInputAction(GameManager *gameManager, InputHandler& inputHandler)
     : gameManager(gameManager), inputHandler(inputHandler) {}

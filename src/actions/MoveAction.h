@@ -6,7 +6,7 @@
 #include "../Entity.h"
 
 enum class Direction {
-    RIGHT, UP, LEFT, DOWN, NONE
+    RIGHT = 0, UP = 1, LEFT = 2, DOWN = 3, NONE
 };
 
 class MoveAction : public Action {
