@@ -61,8 +61,13 @@ int Game::run() {
 
     // Map building
     std::shared_ptr<Map> map = MapBuilder(32, 32, UNIT)
-            .fill(tileSet.get("grass"), 16, 9)
+            .fill(tileSet.get("grass"), 0, 0, 16, 9)
             .addLayer()
+            .fill(tileSet.get("tree"), 0, 0, 1, 9)
+            .fill(tileSet.get("tree"), 0, 0, 16, 1)
+            .fill(tileSet.get("tree"), 15, 0, 1, 9)
+            .fill(tileSet.get("tree"), 0, 8, 16, 1)
+            .fill(tileSet.get("tree"), 4, 4, 2, 2)
             .put(tileSet.get("tree"), {1, 1})
             .put(tileSet.get("tree"), {3, 7})
             .put(tileSet.get("tree"), {9, 5})

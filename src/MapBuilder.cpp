@@ -9,9 +9,9 @@ std::shared_ptr<Map> MapBuilder::build() {
     return toReturn;
 }
 
-MapBuilder& MapBuilder::fill(const std::shared_ptr<MapTile> &tile, int width, int height) {
-    for(int i = 0; i < height; i++) {
-        for(int j = 0; j < width; j++) {
+MapBuilder & MapBuilder::fill(const std::shared_ptr<MapTile> &tile, int x, int y, int width, int height) {
+    for(int i = y; i < y + height; i++) {
+        for(int j = x; j < x + width; j++) {
             map->put(j, i, *tile);
         }
     }

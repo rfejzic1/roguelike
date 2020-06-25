@@ -9,7 +9,7 @@ class MapBuilder {
 public:
     MapBuilder(int width, int height, int tileSize);
     MapBuilder& addLayer();
-    MapBuilder& fill(const std::shared_ptr<MapTile> &tile, int width, int height);
+    MapBuilder &fill(const std::shared_ptr<MapTile> &tile, int x, int y, int width, int height);
     MapBuilder& put(const std::shared_ptr<MapTile> &tile, const Vector2D& position);
     std::shared_ptr<Map> build();
 };
