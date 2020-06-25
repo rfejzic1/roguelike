@@ -69,3 +69,16 @@ bool Map::isTileAny(int x, int y, const std::vector<TileType> &tileTypes) {
     }
     return false;
 }
+
+bool Map::isTileNone(int x, int y, const std::vector<TileType> &tileTypes) {
+    for(auto& layer : mapLayers) {
+        auto tile = layer.get(y, x);
+        if(tile) {
+            auto it = std::find(tileTypes.begin(), tileTypes.end(), tile->tileType);
+            if(it != tileTypes.end()) {
+                return false;
+            }
+        }
+    }
+    return true;
+}

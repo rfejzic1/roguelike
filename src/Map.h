@@ -37,6 +37,7 @@ public:
     void remove(int x, int y);
     MapTile& getTile(int x, int y);
     bool isTileAny(int x, int y, const std::vector<TileType>& tileTypes);
+    bool isTileNone(int x, int y, const std::vector<TileType>& tileTypes);
     void render(Renderer* renderer) override;
     void renderLayer(Renderer* renderer, int layer);
     int getWidth() const;
