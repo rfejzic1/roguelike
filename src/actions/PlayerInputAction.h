@@ -3,12 +3,12 @@
 #include "Action.h"
 #include "../core/InputHandler.h"
 
-class Hero;
+class GameManager;
 
 class PlayerInputAction : public Action {
-    Hero* hero;
+    GameManager* gameManager;
     InputHandler& inputHandler;
 public:
-    explicit PlayerInputAction(Hero* hero, InputHandler& inputHandler);
+    explicit PlayerInputAction(GameManager *gameManager, InputHandler& inputHandler);
     ActionState perform() override;
 };

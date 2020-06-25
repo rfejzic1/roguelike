@@ -38,6 +38,10 @@ struct Vector2D {
         return { this->x * value, this->y * value };
     }
 
+    Vector2D operator /(int value) const {
+        return { this->x / value, this->y / value };
+    }
+
     bool operator ==(const Vector2D& other) const {
         return this->x == other.x && this->y == other.y;
     }

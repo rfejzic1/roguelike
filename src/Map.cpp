@@ -2,6 +2,8 @@
 #include "core/Renderer.h"
 #include "core/Sprite.h"
 
+#include <algorithm>
+
 Map::Map(int mapWidth, int mapHeight, int tileSize)
     : width(mapWidth), height(mapHeight), tileSize(tileSize)
 {
@@ -49,4 +51,21 @@ int Map::getHeight() const {
 
 MapLayer &Map::getCurrentLayer() {
     return mapLayers[currentLayer];
+}
+
+MapTile &Map::getTile(int x, int y) {
+    return *getCurrentLayer().get(y, x);
+}
+
+bool Map::isTileAny(int x, int y, const std::vector<TileType> &tileTypes) {
+    for(auto& layer : mapLayers) {
+        auto tile = layer.get(y, x);
+        if(tile) {
+            auto it = std::find(tileTypes.begin(), tileTypes.end(), tile->tileType);
+            if(it != tileTypes.end()) {
+                return true;
+            }
+        }
+    }
+    return false;
 }

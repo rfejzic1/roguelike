@@ -14,7 +14,7 @@ class TileSet {
     SpriteAtlas& spriteAtlas;
 public:
     TileSet(SpriteAtlas& spriteAtlas);
-    void put(const std::string &tileName, const std::string &spriteName, bool isCollidable);
+    void put(const std::string &tileName, const std::string &spriteName, const TileType &tileType);
     void remove(const std::string& name);
     std::shared_ptr<MapTile> get(const std::string& name);
 };

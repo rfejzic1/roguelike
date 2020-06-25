@@ -1,6 +1,6 @@
 #include "TurnManager.h"
 
-TurnManager::TurnManager(const EntityCollection &entities)
+TurnManager::TurnManager(std::vector<std::shared_ptr<Entity>>& entities)
     : entities(entities)
 {
     next();
@@ -13,10 +13,6 @@ void TurnManager::update() {
             currentAction = currentAction->hasChainAction() ? currentAction->getChainAction() : nullptr;
         }
     }
-}
-
-EntityCollection TurnManager::getEntities() {
-    return entities;
 }
 
 void TurnManager::next() {

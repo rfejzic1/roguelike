@@ -6,6 +6,7 @@
 #include "Hero.h"
 #include "Monster.h"
 #include "TurnManager.h"
+#include "GameManager.h"
 
 
 Game::Game() : engine(VIEW_WIDTH, VIEW_HEIGHT, SCALE) {
@@ -49,17 +50,10 @@ int Game::run() {
     SpriteAnimator skeletonAnimator("idle", *skeletonSprites.get("idle"));
     skeletonAnimator.createState("walk", *skeletonSprites.get("walk"));
 
-    // Entities
-    std::shared_ptr<Entity> character = std::make_shared<Hero>(engine, Vector2D{8 * UNIT, 4 * UNIT}, characterAnimator);
-    std::shared_ptr<Entity> skeleton = std::make_shared<Monster>(Vector2D{12 * UNIT, 2 * UNIT}, skeletonAnimator);
-    std::shared_ptr<Entity> skeleton2 = std::make_shared<Monster>(Vector2D{3 * UNIT, 5 * UNIT}, skeletonAnimator);
-    std::shared_ptr<Entity> skeleton3 = std::make_shared<Monster>(Vector2D{1 * UNIT, 2 * UNIT}, skeletonAnimator);
-    std::shared_ptr<Entity> skeleton4 = std::make_shared<Monster>(Vector2D{6 * UNIT, 6 * UNIT}, skeletonAnimator);
-
     // TileSet
     TileSet tileSet(tileSetSprites);
-    tileSet.put("grass", "grass", false);
-    tileSet.put("tree", "tree", true);
+    tileSet.put("grass", "grass", TileType::GROUND);
+    tileSet.put("tree", "tree", TileType::WALL);
 
     // Camera and Input handler
     Camera& cam = engine.getRenderer().getCamera();
@@ -74,20 +68,25 @@ int Game::run() {
             .put(tileSet.get("tree"), {9, 5})
             .build();
 
-    TurnManager turnManager ({ character, skeleton, skeleton2, skeleton3, skeleton4 });
+    GameManager gameManager(engine, map);
+    gameManager.createHero({8 * UNIT, 4 * UNIT}, characterAnimator);
+    gameManager.createMonster({12 * UNIT, 2 * UNIT}, skeletonAnimator);
+    gameManager.createMonster({3 * UNIT, 5 * UNIT}, skeletonAnimator);
+    gameManager.createMonster({1 * UNIT, 2 * UNIT}, skeletonAnimator);
+    gameManager.createMonster({6 * UNIT, 6 * UNIT}, skeletonAnimator);
+
+    TurnManager turnManager (gameManager.getEntities());
 
     engine.loop([&](double delta) {
-        SDL_Log("fps: %lf", engine.getFPS());
-
         if(!turnManager.hasAction()) {
             turnManager.next();
         }
         turnManager.update();
 
-        cam.snapFollowTarget(character->getPosition(), VIEW_WIDTH, VIEW_HEIGHT);
+        cam.snapFollowTarget(gameManager.getHero()->getPosition(), VIEW_WIDTH, VIEW_HEIGHT);
 
         map->render(&engine.getRenderer());
-        for(auto& entity : turnManager.getEntities()) {
+        for(auto& entity : gameManager.getEntities()) {
             entity->render(&engine.getRenderer());
         }
         turnIndicatorSprite.render(&engine.getRenderer(), turnManager.getCurrentEntity()->getPosition());

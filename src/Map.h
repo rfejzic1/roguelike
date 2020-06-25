@@ -8,12 +8,16 @@
 class Sprite;
 class Renderer;
 
+enum class TileType {
+    GROUND, WALL
+};
+
 struct MapTile {
     std::shared_ptr<Sprite> sprite;
-    bool collidable;
+    TileType tileType;
 
-    MapTile(const std::shared_ptr<Sprite>& sprite, bool collidable)
-        : sprite(sprite), collidable(collidable) {}
+    MapTile(const std::shared_ptr<Sprite>& sprite, const TileType& tileType)
+        : sprite(sprite), tileType(tileType) {}
 };
 
 typedef Matrix<std::shared_ptr<MapTile>> MapLayer;
@@ -31,6 +35,8 @@ public:
     void addLayer();
     void put(int x, int y, const MapTile& tile);
     void remove(int x, int y);
+    MapTile& getTile(int x, int y);
+    bool isTileAny(int x, int y, const std::vector<TileType>& tileTypes);
     void render(Renderer* renderer) override;
     void renderLayer(Renderer* renderer, int layer);
     int getWidth() const;

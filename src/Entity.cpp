@@ -2,8 +2,8 @@
 #include "core/SpriteAnimator.h"
 #include "core/GameEngine.h"
 
-Entity::Entity(const Vector2D &position, const SpriteAnimator &animator)
-    : position(position), animator(animator) {}
+Entity::Entity(GameManager *gameManager, const Vector2D &position, const SpriteAnimator &animator)
+    : gameManager(gameManager), position(position), animator(animator) {}
 
 void Entity::render(Renderer *renderer) {
     animator.getSprite().render(renderer, position, facingLeft);
