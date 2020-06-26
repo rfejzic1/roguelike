@@ -73,12 +73,12 @@ int Game::run() {
             .put(tileSet.get("tree"), {9, 5})
             .build();
 
-    GameManager gameManager(engine, map);
-    gameManager.createHero({8 * UNIT, 4 * UNIT}, characterAnimator);
-    gameManager.createMonster({12 * UNIT, 2 * UNIT}, skeletonAnimator);
-    gameManager.createMonster({3 * UNIT, 5 * UNIT}, skeletonAnimator);
-    gameManager.createMonster({1 * UNIT, 2 * UNIT}, skeletonAnimator);
-    gameManager.createMonster({6 * UNIT, 6 * UNIT}, skeletonAnimator);
+    GameManager gameManager(engine, map, UNIT);
+    gameManager.createHero({8, 4}, characterAnimator);
+    gameManager.createMonster({12, 2}, skeletonAnimator);
+    gameManager.createMonster({3, 5}, skeletonAnimator);
+    gameManager.createMonster({1, 2}, skeletonAnimator);
+    gameManager.createMonster({6, 6}, skeletonAnimator);
 
     TurnManager turnManager (gameManager.getEntities());
 
@@ -94,7 +94,7 @@ int Game::run() {
         for(auto& entity : gameManager.getEntities()) {
             entity->render(&engine.getRenderer());
         }
-        turnIndicatorSprite.render(&engine.getRenderer(), turnManager.getCurrentEntity()->getPosition());
+        turnIndicatorSprite.render(&engine.getRenderer(), turnManager.getCurrentEntity()->getTruePosition());
     });
 
     return 0;

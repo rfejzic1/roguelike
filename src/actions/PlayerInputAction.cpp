@@ -27,14 +27,14 @@ ActionState PlayerInputAction::perform() {
         relPos = Vector2D{0, 1};
     }
 
-    Vector2D tilePos = heroPos / 16 + relPos;
+    Vector2D tilePos = heroPos + relPos;
     if(gameManager->getMap()->isTileAny(tilePos.x, tilePos.y, {TileType::WALL })
-        || gameManager->isPositionTaken(heroPos + relPos * 16)) {
+        || gameManager->isPositionTaken(tilePos)) {
         moveDir = Direction::NONE;
     }
 
     if(moveDir != Direction::NONE) {
-        chainAction = std::make_shared<MoveAction>(gameManager->getHero().get(), moveDir);
+        chainAction = std::make_shared<MoveAction>(gameManager->getHero().get(), moveDir, gameManager->getUnitSize());
         return ActionState::DONE;
     }
 

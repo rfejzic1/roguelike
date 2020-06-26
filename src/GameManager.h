@@ -14,13 +14,14 @@ class GameManager {
     std::vector<std::shared_ptr<Entity>> entities;
     std::shared_ptr<Hero> hero;
     std::shared_ptr<Map> map;
+    const int UNIT;
 public:
-    explicit GameManager(GameEngine &gameEngine, const std::shared_ptr<Map> &map);
+    explicit GameManager(GameEngine &gameEngine, const std::shared_ptr<Map> &map, int unitSize);
     std::shared_ptr<Map> getMap();
     std::vector<std::shared_ptr<Entity>>& getEntities();
     std::shared_ptr<Hero> getHero();
-    void addEntity(const std::shared_ptr<Entity>& entity);
     void createHero(const Vector2D &position, const SpriteAnimator& animator);
     void createMonster(const Vector2D &position, const SpriteAnimator& animator);
     bool isPositionTaken(const Vector2D& position);
+    int getUnitSize();
 };

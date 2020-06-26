@@ -11,12 +11,12 @@ std::shared_ptr<Action> Monster::takeTurn() {
     std::vector<Direction> availableDirections;
 
     auto isNotWall = [&](const Vector2D& relPos) {
-        Vector2D tilePos = position / 16 + relPos;
+        Vector2D tilePos = getPosition() + relPos;
         return gameManager->getMap()->isTileNone(tilePos.x, tilePos.y, { TileType::WALL });
     };
 
     auto isNotPositionTaken = [&](const Vector2D& relPos) {
-        Vector2D targetPos = position + relPos * 16;
+        Vector2D targetPos = getPosition() + relPos;
         return isNotWall(relPos) && !gameManager->isPositionTaken(targetPos);
     };
 
@@ -39,5 +39,5 @@ std::shared_ptr<Action> Monster::takeTurn() {
         direction = availableDirections[randomIndex];
     }
 
-    return std::make_shared<MoveAction>(this, direction);
+    return std::make_shared<MoveAction>(this, direction, gameManager->getUnitSize());
 }

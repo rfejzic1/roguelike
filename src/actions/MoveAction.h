@@ -12,11 +12,8 @@ class MoveAction : public Action {
     Vector2D targetPosition;
     bool interpolate;
 
-    // TODO: Move this UNIT constant elsewhere
-    static const int UNIT = 16;
-
     static Vector2D getTargetVector(const Direction& dir);
 public:
-    MoveAction(Entity *entity, const Direction &direction, bool interpolate = true);
+    MoveAction(Entity *entity, const Direction &direction, int moveUnit, bool interpolate = true);
     ActionState perform() override;
 };

@@ -2,15 +2,11 @@
 #include "Hero.h"
 #include "Monster.h"
 
-GameManager::GameManager(GameEngine &gameEngine, const std::shared_ptr<Map> &map)
-    : gameEngine(gameEngine), map(map) {}
+GameManager::GameManager(GameEngine &gameEngine, const std::shared_ptr<Map> &map, int unitSize)
+    : gameEngine(gameEngine), map(map), UNIT(unitSize) {}
 
 std::shared_ptr<Map> GameManager::getMap() {
     return map;
-}
-
-void GameManager::addEntity(const std::shared_ptr<Entity> &entity) {
-    entities.emplace_back(entity);
 }
 
 std::vector<std::shared_ptr<Entity>>& GameManager::getEntities() {
@@ -37,4 +33,8 @@ bool GameManager::isPositionTaken(const Vector2D &position) {
         }
     }
     return false;
+}
+
+int GameManager::getUnitSize() {
+    return UNIT;
 }
