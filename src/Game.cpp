@@ -4,15 +4,14 @@
 #include "MapBuilder.h"
 #include "TileSet.h"
 #include "Hero.h"
-#include "Monster.h"
 #include "TurnManager.h"
 #include "GameManager.h"
 
 
 Game::Game() : engine(VIEW_WIDTH, VIEW_HEIGHT, SCALE) {
-    engine.getTextureManager().load("character", "/home/rijad/Projects/roguelike/images/character.png");
-    engine.getTextureManager().load("skeleton", "/home/rijad/Projects/roguelike/images/skeleton.png");
-    engine.getTextureManager().load("tileset", "/home/rijad/Projects/roguelike/images/tileset.png");
+    engine.getTextureManager().load("character", "./images/character.png");
+    engine.getTextureManager().load("skeleton", "./images/skeleton.png");
+    engine.getTextureManager().load("tileset", "./images/tileset.png");
 }
 
 int Game::run() {
