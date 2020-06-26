@@ -4,10 +4,7 @@
 #include "../core/Vector2D.h"
 #include "../core/SpriteAnimator.h"
 #include "../Entity.h"
-
-enum class Direction {
-    RIGHT = 0, UP = 1, LEFT = 2, DOWN = 3, NONE
-};
+#include "Direction.h"
 
 class MoveAction : public Action {
     Entity* entity;
