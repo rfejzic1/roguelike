@@ -7,27 +7,29 @@ PlayerInputAction::PlayerInputAction(GameManager *gameManager, InputHandler& inp
 
 ActionState PlayerInputAction::perform() {
     Direction moveDir = Direction::NONE;
-    Vector2D heroPos = gameManager->getHero()->getPosition() / 16;
-    Vector2D checkPos = heroPos;
+    Vector2D heroPos = gameManager->getHero()->getPosition();
+    Vector2D relPos;
 
     if(inputHandler.is("right")) {
         moveDir = Direction::RIGHT;
-        checkPos = heroPos + Vector2D{1, 0};
+        relPos = Vector2D{1, 0};
     }
     if(inputHandler.is("left")) {
         moveDir = Direction::LEFT;
-        checkPos = heroPos + Vector2D{-1, 0};
+        relPos = Vector2D{-1, 0};
     }
     if(inputHandler.is("up")) {
         moveDir = Direction::UP;
-        checkPos = heroPos + Vector2D{0, -1};
+        relPos = Vector2D{0, -1};
     }
     if(inputHandler.is("down")) {
         moveDir = Direction::DOWN;
-        checkPos = heroPos + Vector2D{0, 1};
+        relPos = Vector2D{0, 1};
     }
 
-    if(gameManager->getMap()->isTileAny(checkPos.x, checkPos.y, { TileType::WALL })) {
+    Vector2D tilePos = heroPos / 16 + relPos;
+    if(gameManager->getMap()->isTileAny(tilePos.x, tilePos.y, {TileType::WALL })
+        || gameManager->isPositionTaken(heroPos + relPos * 16)) {
         moveDir = Direction::NONE;
     }
 

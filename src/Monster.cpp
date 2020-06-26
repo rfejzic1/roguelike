@@ -15,16 +15,21 @@ std::shared_ptr<Action> Monster::takeTurn() {
         return gameManager->getMap()->isTileNone(tilePos.x, tilePos.y, { TileType::WALL });
     };
 
-    if(isNotWall({1, 0})) {
+    auto isNotPositionTaken = [&](const Vector2D& relPos) {
+        Vector2D targetPos = position + relPos * 16;
+        return isNotWall(relPos) && !gameManager->isPositionTaken(targetPos);
+    };
+
+    if(isNotPositionTaken({1, 0})) {
         availableDirections.emplace_back(Direction::RIGHT);
     }
-    if(isNotWall({-1, 0})) {
+    if(isNotPositionTaken({-1, 0})) {
         availableDirections.emplace_back(Direction::LEFT);
     }
-    if(isNotWall({0, -1})) {
+    if(isNotPositionTaken({0, -1})) {
         availableDirections.emplace_back(Direction::UP);
     }
-    if(isNotWall({0, 1})) {
+    if(isNotPositionTaken({0, 1})) {
         availableDirections.emplace_back(Direction::DOWN);
     }
 

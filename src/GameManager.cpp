@@ -29,3 +29,12 @@ void GameManager::createMonster(const Vector2D &position, const SpriteAnimator &
 std::shared_ptr<Hero> GameManager::getHero() {
     return hero;
 }
+
+bool GameManager::isPositionTaken(const Vector2D &position) {
+    for(auto& entity : entities) {
+        if(entity->getPosition() == position) {
+            return true;
+        }
+    }
+    return false;
+}

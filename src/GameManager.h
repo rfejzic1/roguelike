@@ -22,4 +22,5 @@ public:
     void addEntity(const std::shared_ptr<Entity>& entity);
     void createHero(const Vector2D &position, const SpriteAnimator& animator);
     void createMonster(const Vector2D &position, const SpriteAnimator& animator);
+    bool isPositionTaken(const Vector2D& position);
 };
