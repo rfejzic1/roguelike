@@ -7,29 +7,21 @@ PlayerInputAction::PlayerInputAction(GameManager *gameManager, InputHandler& inp
 
 ActionState PlayerInputAction::perform() {
     Direction moveDir = Direction::NONE;
-    Vector2D heroPos = gameManager->getHero()->getPosition();
-    Vector2D relPos;
 
     if(inputHandler.is("right")) {
         moveDir = Direction::RIGHT;
-        relPos = Vector2D{1, 0};
     }
     if(inputHandler.is("left")) {
         moveDir = Direction::LEFT;
-        relPos = Vector2D{-1, 0};
     }
     if(inputHandler.is("up")) {
         moveDir = Direction::UP;
-        relPos = Vector2D{0, -1};
     }
     if(inputHandler.is("down")) {
         moveDir = Direction::DOWN;
-        relPos = Vector2D{0, 1};
     }
 
-    Vector2D tilePos = heroPos + relPos;
-    if(gameManager->getMap()->isTileAny(tilePos.x, tilePos.y, {TileType::WALL })
-        || gameManager->isPositionTaken(tilePos)) {
+    if(!gameManager->getHero()->canMoveTo(moveDir, { TileType::WALL })) {
         moveDir = Direction::NONE;
     }
 

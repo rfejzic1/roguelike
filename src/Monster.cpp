@@ -10,26 +10,28 @@ std::shared_ptr<Action> Monster::takeTurn() {
     Direction direction = Direction::NONE;
     std::vector<Direction> availableDirections;
 
-    auto isNotWall = [&](const Vector2D& relPos) {
-        Vector2D tilePos = getPosition() + relPos;
-        return gameManager->getMap()->isTileNone(tilePos.x, tilePos.y, { TileType::WALL });
-    };
+//    auto isNotWall = [&](const Vector2D& relPos) {
+//        Vector2D tilePos = getPosition() + relPos;
+//        return gameManager->getMap()->isTileNone(tilePos.x, tilePos.y, { TileType::WALL });
+//    };
+//
+//    auto isNotPositionTaken = [&](const Vector2D& relPos) {
+//        Vector2D targetPos = getPosition() + relPos;
+//        return isNotWall(relPos) && !gameManager->isPositionTaken(targetPos);
+//    };
 
-    auto isNotPositionTaken = [&](const Vector2D& relPos) {
-        Vector2D targetPos = getPosition() + relPos;
-        return isNotWall(relPos) && !gameManager->isPositionTaken(targetPos);
-    };
+    std::vector<TileType> collidableTiles = { TileType::WALL };
 
-    if(isNotPositionTaken({1, 0})) {
+    if(canMoveTo(Direction::RIGHT, collidableTiles)) {
         availableDirections.emplace_back(Direction::RIGHT);
     }
-    if(isNotPositionTaken({-1, 0})) {
+    if(canMoveTo(Direction::LEFT, collidableTiles)) {
         availableDirections.emplace_back(Direction::LEFT);
     }
-    if(isNotPositionTaken({0, -1})) {
+    if(canMoveTo(Direction::UP, collidableTiles)) {
         availableDirections.emplace_back(Direction::UP);
     }
-    if(isNotPositionTaken({0, 1})) {
+    if(canMoveTo(Direction::DOWN, collidableTiles)) {
         availableDirections.emplace_back(Direction::DOWN);
     }
 

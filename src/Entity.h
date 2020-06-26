@@ -4,6 +4,8 @@
 #include "core/Renderable.h"
 #include "core/SpriteAnimator.h"
 #include "actions/Action.h"
+#include "actions/Direction.h"
+#include "Map.h"
 
 class GameEngine;
 class GameManager;
@@ -25,5 +27,6 @@ public:
     void setPosition(const Vector2D& position);
     SpriteAnimator& getSpriteAnimator();
     void setFacingLeft(bool left);
+    bool canMoveTo(Direction direction, const std::vector<TileType>& tileTypes);
     ~Entity() override = default;
 };

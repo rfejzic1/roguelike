@@ -29,3 +29,29 @@ void Entity::setPosition(const Vector2D &newPosition) {
 Vector2D &Entity::getTruePosition() {
     return position;
 }
+
+bool Entity::canMoveTo(Direction direction, const std::vector<TileType> &tileTypes) {
+    Vector2D targetPos;
+
+    switch (direction) {
+        case Direction::RIGHT:
+            targetPos = {1, 0};
+            break;
+        case Direction::UP:
+            targetPos = {0, -1};
+            break;
+        case Direction::LEFT:
+            targetPos = {-1, 0};
+            break;
+        case Direction::DOWN:
+            targetPos = {0, 1};
+            break;
+        default:
+            targetPos = {0, 0};
+    }
+
+    targetPos = targetPos + getPosition();
+
+    return !gameManager->getMap()->isTileAny(targetPos.x, targetPos.y, {TileType::WALL })
+            && !gameManager->isPositionTaken(targetPos);
+}
