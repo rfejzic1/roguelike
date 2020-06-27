@@ -18,6 +18,7 @@ private:
 protected:
     SpriteAnimator animator;
     bool facingLeft = false;
+    bool interpolate;
 public:
     Entity(GameManager *gameManager, const Vector2D &position, const SpriteAnimator &animator);
     void render(Renderer *renderer) override;
@@ -27,6 +28,7 @@ public:
     void setPosition(const Vector2D& position);
     SpriteAnimator& getSpriteAnimator();
     void setFacingLeft(bool left);
+    void setInterpolate(bool doInterpolate);
     bool canMoveTo(Direction direction, const std::vector<TileType>& tileTypes);
     ~Entity() override = default;
 };

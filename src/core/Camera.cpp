@@ -34,3 +34,8 @@ void Camera::snapFollowTarget(const Vector2D &targetPosition, int snapWidth, int
 void Camera::setRenderer(Renderer *newRenderer) {
     renderer = newRenderer;
 }
+
+bool Camera::isInView(const Rect &rect) {
+    return rect.x + rect.width >= position.x && rect.x <= position.x + renderer->getViewWidth()
+            && rect.y + rect.height >= position.y && rect.y <= position.y + renderer->getViewHeight();
+}

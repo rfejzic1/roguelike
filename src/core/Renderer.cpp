@@ -9,6 +9,7 @@ Renderer::Renderer(SDL_Window* window, int viewWidth, int viewHeight, int scale)
     SDL_RenderSetIntegerScale(renderer, SDL_TRUE);
     SDL_RenderSetLogicalSize(renderer, VIEW_WIDTH, VIEW_HEIGHT);
     SDL_RenderSetScale(renderer, SCALE, SCALE);
+    setCamera({});
 }
 
 void Renderer::clear() {
@@ -75,8 +76,17 @@ double Renderer::getFPS() const {
 
 void Renderer::setCamera(const Camera &newCamera) {
     camera = newCamera;
+    camera.setRenderer(this);
 }
 
 Camera &Renderer::getCamera() {
     return camera;
+}
+
+int Renderer::getViewWidth() {
+    return VIEW_WIDTH;
+}
+
+int Renderer::getViewHeight() {
+    return VIEW_HEIGHT;
 }

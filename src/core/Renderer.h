@@ -27,6 +27,8 @@ public:
     double getFPS() const;
     void setCamera(const Camera& newCamera);
     Camera& getCamera();
+    int getViewWidth();
+    int getViewHeight();
     ~Renderer();
     friend class GameEngine;
 };

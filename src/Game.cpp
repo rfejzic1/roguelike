@@ -91,6 +91,9 @@ int Game::run() {
 
         map->render(&engine.getRenderer());
         for(auto& entity : gameManager.getEntities()) {
+            Vector2D pos = entity->getTruePosition();
+            bool isEntityInView = cam.isInView({ pos.x, pos.y, UNIT, UNIT });
+            entity->setInterpolate(isEntityInView);
             entity->render(&engine.getRenderer());
         }
         turnIndicatorSprite.render(&engine.getRenderer(), turnManager.getCurrentEntity()->getTruePosition());

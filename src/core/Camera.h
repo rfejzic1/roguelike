@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Vector2D.h"
+#include "Rect.h"
 
 class Renderer;
 
@@ -16,4 +17,6 @@ public:
     void moveBy(const Vector2D& delta);
     void snapFollowTarget(const Vector2D &targetPosition, int snapWidth, int snapHeight);
     Vector2D getPosition();
+    bool isInView(const Rect& rect);
+    friend class Renderer;
 };

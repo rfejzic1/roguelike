@@ -4,7 +4,8 @@
 #include "GameManager.h"
 
 Entity::Entity(GameManager *gameManager, const Vector2D &position, const SpriteAnimator &animator)
-    : gameManager(gameManager), position(position * gameManager->getUnitSize()), animator(animator) {}
+    : gameManager(gameManager), position(position * gameManager->getUnitSize()), animator(animator),
+      interpolate(true) {}
 
 void Entity::render(Renderer *renderer) {
     animator.getSprite().render(renderer, position, facingLeft);
@@ -54,4 +55,8 @@ bool Entity::canMoveTo(Direction direction, const std::vector<TileType> &tileTyp
 
     return !gameManager->getMap()->isTileAny(targetPos.x, targetPos.y, {TileType::WALL })
             && !gameManager->isPositionTaken(targetPos);
+}
+
+void Entity::setInterpolate(bool doInterpolate) {
+    interpolate = doInterpolate;
 }

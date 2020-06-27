@@ -10,29 +10,14 @@ std::shared_ptr<Action> Monster::takeTurn() {
     Direction direction = Direction::NONE;
     std::vector<Direction> availableDirections;
 
-//    auto isNotWall = [&](const Vector2D& relPos) {
-//        Vector2D tilePos = getPosition() + relPos;
-//        return gameManager->getMap()->isTileNone(tilePos.x, tilePos.y, { TileType::WALL });
-//    };
-//
-//    auto isNotPositionTaken = [&](const Vector2D& relPos) {
-//        Vector2D targetPos = getPosition() + relPos;
-//        return isNotWall(relPos) && !gameManager->isPositionTaken(targetPos);
-//    };
-
     std::vector<TileType> collidableTiles = { TileType::WALL };
 
-    if(canMoveTo(Direction::RIGHT, collidableTiles)) {
-        availableDirections.emplace_back(Direction::RIGHT);
-    }
-    if(canMoveTo(Direction::LEFT, collidableTiles)) {
-        availableDirections.emplace_back(Direction::LEFT);
-    }
-    if(canMoveTo(Direction::UP, collidableTiles)) {
-        availableDirections.emplace_back(Direction::UP);
-    }
-    if(canMoveTo(Direction::DOWN, collidableTiles)) {
-        availableDirections.emplace_back(Direction::DOWN);
+    auto dirs = { Direction::RIGHT, Direction::LEFT, Direction::UP, Direction::DOWN };
+
+    for(auto& dir : dirs) {
+        if(canMoveTo(dir, collidableTiles)) {
+            availableDirections.emplace_back(dir);
+        }
     }
 
     if(!availableDirections.empty()) {
@@ -41,5 +26,5 @@ std::shared_ptr<Action> Monster::takeTurn() {
         direction = availableDirections[randomIndex];
     }
 
-    return std::make_shared<MoveAction>(this, direction, gameManager->getUnitSize());
+    return std::make_shared<MoveAction>(this, direction, gameManager->getUnitSize(), interpolate);
 }
