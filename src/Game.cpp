@@ -87,7 +87,7 @@ int Game::run() {
         }
         turnManager.update();
 
-        cam.snapFollowTarget(gameManager.getHero()->getPosition(), VIEW_WIDTH, VIEW_HEIGHT);
+        cam.snapFollowTarget(gameManager.getHero()->getTruePosition(), VIEW_WIDTH, VIEW_HEIGHT);
 
         map->render(&engine.getRenderer());
         for(auto& entity : gameManager.getEntities()) {
