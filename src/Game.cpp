@@ -40,6 +40,7 @@ int Game::run() {
     SpriteAtlas tileSetSprites(tileSetTexture);
     tileSetSprites.mark("tree", {UNIT * 6, 0, UNIT, UNIT });
     tileSetSprites.mark("grass", {UNIT * 6, UNIT * 1, UNIT, UNIT });
+    tileSetSprites.mark("sign", {UNIT * 6, UNIT * 2, UNIT, UNIT});
 
     // Character Animator
     SpriteAnimator characterAnimator("idle", *characterSprites.get("idle"));
@@ -53,10 +54,6 @@ int Game::run() {
     TileSet tileSet(tileSetSprites);
     tileSet.put("grass", "grass", TileType::GROUND);
     tileSet.put("tree", "tree", TileType::WALL);
-
-    // Camera and Input handler
-    Camera& cam = engine.getRenderer().getCamera();
-    InputHandler& inputHandler = engine.getInputHandler();
 
     // Map building
     std::shared_ptr<Map> map = MapBuilder(32, 32, UNIT)
@@ -72,12 +69,18 @@ int Game::run() {
             .put(tileSet.get("tree"), {9, 5})
             .build();
 
+    // GameManager setup
     GameManager gameManager(engine, map, UNIT);
     gameManager.createHero({8, 4}, characterAnimator);
     gameManager.createMonster({12, 2}, skeletonAnimator);
     gameManager.createMonster({3, 5}, skeletonAnimator);
     gameManager.createMonster({1, 2}, skeletonAnimator);
     gameManager.createMonster({6, 6}, skeletonAnimator);
+
+    gameManager.createMapObject(
+            {7, 4},
+            tileSetSprites.get("sign"),
+            true);
 
     TurnManager turnManager (gameManager.getEntities());
 
@@ -87,15 +90,9 @@ int Game::run() {
         }
         turnManager.update();
 
-        cam.snapFollowTarget(gameManager.getHero()->getTruePosition(), VIEW_WIDTH, VIEW_HEIGHT);
+        engine.getRenderer().getCamera().snapFollowTarget(gameManager.getHero()->getTruePosition(), VIEW_WIDTH, VIEW_HEIGHT);
 
-        map->render(&engine.getRenderer());
-        for(auto& entity : gameManager.getEntities()) {
-            Vector2D pos = entity->getTruePosition();
-            bool isEntityInView = cam.isInView({ pos.x, pos.y, UNIT, UNIT });
-            entity->setInterpolate(isEntityInView);
-            entity->render(&engine.getRenderer());
-        }
+        gameManager.render();
         turnIndicatorSprite.render(&engine.getRenderer(), turnManager.getCurrentEntity()->getTruePosition());
     });
 

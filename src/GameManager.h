@@ -5,6 +5,7 @@
 #include "Map.h"
 #include "core/GameEngine.h"
 #include "core/SpriteAnimator.h"
+#include "MapObject.h"
 
 class Entity;
 class Hero;
@@ -14,6 +15,7 @@ class GameManager {
     std::vector<std::shared_ptr<Entity>> entities;
     std::shared_ptr<Hero> hero;
     std::shared_ptr<Map> map;
+    Matrix<std::shared_ptr<MapObject>> mapObjects;
     const int UNIT;
 public:
     explicit GameManager(GameEngine &gameEngine, const std::shared_ptr<Map> &map, int unitSize);
@@ -22,6 +24,9 @@ public:
     std::shared_ptr<Hero> getHero();
     void createHero(const Vector2D &position, const SpriteAnimator& animator);
     void createMonster(const Vector2D &position, const SpriteAnimator& animator);
+    void createMapObject(const Vector2D &position, const std::shared_ptr<Sprite> &sprite, bool isCollidable);
     bool isPositionTaken(const Vector2D& position);
+    std::shared_ptr<MapObject> getMapObjectAt(const Vector2D& position);
     int getUnitSize();
+    void render();
 };
