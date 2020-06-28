@@ -7,8 +7,8 @@ Monster::Monster(GameManager *gameManager, const Vector2D &position,
         : Entity(gameManager, position, animator), rng(dev()) {}
 
 std::shared_ptr<Action> Monster::takeTurn() {
-    Direction direction = Direction::NONE;
-    std::vector<Direction> availableDirections;
+    Direction direction;
+    std::vector<Direction> availableDirections = { Direction::NONE };
 
     std::vector<TileType> collidableTiles = { TileType::WALL };
 
@@ -20,11 +20,9 @@ std::shared_ptr<Action> Monster::takeTurn() {
         }
     }
 
-    if(!availableDirections.empty()) {
-        std::uniform_int_distribution<std::mt19937::result_type> dist(0, availableDirections.size() - 1);
-        int randomIndex = dist(rng);
-        direction = availableDirections[randomIndex];
-    }
+    std::uniform_int_distribution<std::mt19937::result_type> dist(0, availableDirections.size() - 1);
+    int randomIndex = dist(rng);
+    direction = availableDirections[randomIndex];
 
     return std::make_shared<MoveAction>(this, direction, gameManager->getUnitSize(), interpolate);
 }
