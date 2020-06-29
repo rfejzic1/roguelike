@@ -13,6 +13,19 @@ GameEngine::GameEngine(int width, int height, int scale) {
         return;
     }
 
+    //Initialize SDL_ttf
+    if(TTF_Init() == -1) {
+        SDL_Log( "Error: %s", TTF_GetError());
+        return;
+    }
+
+    //Open the font
+    font = TTF_OpenFont( "./fonts/PressStart2P-Regular.ttf", 8);
+    if(!font) {
+        SDL_Log( "Error: %s", TTF_GetError());
+        return;
+    }
+
     window = SDL_CreateWindow(
             "roguelike",
             SDL_WINDOWPOS_CENTERED,
@@ -32,12 +45,15 @@ GameEngine::~GameEngine() {
         delete renderer;
         delete inputHandler;
         delete textureManager;
+        TTF_CloseFont(font);
+        font = nullptr;
         textureManager = nullptr;
         inputHandler = nullptr;
         renderer = nullptr;
         SDL_DestroyWindow(window);
         window = nullptr;
     }
+    TTF_Quit();
     IMG_Quit();
     SDL_Quit();
 }
@@ -98,4 +114,8 @@ TextureManager &GameEngine::getTextureManager() {
 
 double GameEngine::getFPS() const {
     return avgFPS;
+}
+
+TTF_Font *GameEngine::getFont() {
+    return font;
 }

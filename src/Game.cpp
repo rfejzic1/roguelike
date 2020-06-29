@@ -94,6 +94,8 @@ int Game::run() {
 
         gameManager.render();
         turnIndicatorSprite.render(&engine.getRenderer(), turnManager.getCurrentEntity()->getTruePosition());
+
+        engine.getRenderer().renderText("The Valley of Heroes", { 8, 8 }, { 0x00, 0x00, 0x00 });
     });
 
     return 0;

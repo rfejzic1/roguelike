@@ -1,6 +1,7 @@
 #include "Renderer.h"
 #include "Texture.h"
 #include "GameEngine.h"
+#include <SDL2/SDL_ttf.h>
 
 Renderer::Renderer(SDL_Window* window, int viewWidth, int viewHeight, int scale)
     : VIEW_WIDTH(viewWidth), VIEW_HEIGHT(viewHeight), SCALE(scale), camera()
@@ -89,4 +90,10 @@ int Renderer::getViewWidth() {
 
 int Renderer::getViewHeight() {
     return VIEW_HEIGHT;
+}
+
+void Renderer::renderText(const std::string &text, const Vector2D &position, const SDL_Color &color) {
+    Texture textTexture(renderer, gameEngine->getFont(), text, color);
+    Rect dest = { position.x, position.y, textTexture.getWidth(), textTexture.getHeight() };
+    render(&textTexture, &dest);
 }

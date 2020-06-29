@@ -15,4 +15,4 @@ file(GLOB proj_src
 add_executable(roguelike main.cpp ${proj_src})
 
 include_directories("/usr/include")
-target_link_libraries(roguelike "/usr/lib/libSDL2.so" "/usr/lib/libSDL2_image.so")
+target_link_libraries(roguelike "/usr/lib/libSDL2.so" "/usr/lib/libSDL2_image.so" "/usr/lib/libSDL2_ttf.so")
