@@ -38,6 +38,7 @@ GameEngine::~GameEngine() {
         SDL_DestroyWindow(window);
         window = nullptr;
     }
+    IMG_Quit();
     SDL_Quit();
 }
 
