@@ -24,7 +24,6 @@ public:
     void clear();
     void render(Texture *texture, Rect *dest);
     void render(Texture *texture, Rect *src, Rect *dest, bool flipped = false);
-    void renderText(const std::string &text, const Vector2D &position, const SDL_Color &color);
     void update();
     double getFPS() const;
     void setCamera(const Camera& newCamera);
@@ -33,4 +32,5 @@ public:
     int getViewHeight();
     ~Renderer();
     friend class GameEngine;
+    friend class Texture;
 };

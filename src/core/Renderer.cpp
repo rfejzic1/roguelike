@@ -91,9 +91,3 @@ int Renderer::getViewWidth() {
 int Renderer::getViewHeight() {
     return VIEW_HEIGHT;
 }
-
-void Renderer::renderText(const std::string &text, const Vector2D &position, const SDL_Color &color) {
-    Texture textTexture(renderer, gameEngine->getFont(), text, color);
-    Rect dest = { position.x, position.y, textTexture.getWidth(), textTexture.getHeight() };
-    render(&textTexture, &dest);
-}

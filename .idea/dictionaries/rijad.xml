@@ -3,6 +3,7 @@
     <words>
       <w>collidable</w>
       <w>emissive</w>
+      <w>interactable</w>
       <w>unmark</w>
     </words>
   </dictionary>

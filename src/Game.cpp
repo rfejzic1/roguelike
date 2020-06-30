@@ -6,7 +6,8 @@
 #include "Hero.h"
 #include "TurnManager.h"
 #include "GameManager.h"
-
+#include "core/UIRenderer.h"
+#include "core/UIText.h"
 
 Game::Game() : engine(VIEW_WIDTH, VIEW_HEIGHT, SCALE) {
     engine.getTextureManager().load("character", "./images/character.png");
@@ -84,6 +85,15 @@ int Game::run() {
 
     TurnManager turnManager (gameManager.getEntities());
 
+    UIRenderer uiRenderer(&engine.getRenderer());
+    auto healthTextUI = std::make_shared<UIText>(
+            &uiRenderer,
+            Vector2D{4, 4},
+            engine.getFont(),
+            "Health: 10",
+            Color{0x00, 0x00, 0x00}
+            );
+
     engine.loop([&](double delta) {
         if(!turnManager.hasAction()) {
             turnManager.next();
@@ -95,7 +105,7 @@ int Game::run() {
         gameManager.render();
         turnIndicatorSprite.render(&engine.getRenderer(), turnManager.getCurrentEntity()->getTruePosition());
 
-        engine.getRenderer().renderText("The Valley of Heroes", { 8, 8 }, { 0x00, 0x00, 0x00 });
+        uiRenderer.render(healthTextUI.get());
     });
 
     return 0;
